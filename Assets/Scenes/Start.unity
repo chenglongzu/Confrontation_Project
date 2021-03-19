@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 81447871}
   - component: {fileID: 81447870}
   m_Layer: 5
-  m_Name: Container
+  m_Name: CharacterToGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1411,8 +1411,8 @@ GameObject:
   - component: {fileID: 1103801887}
   - component: {fileID: 1103801886}
   - component: {fileID: 1103801885}
-  - component: {fileID: 1103801884}
   - component: {fileID: 1103801888}
+  - component: {fileID: 1103801884}
   m_Layer: 5
   m_Name: UI Root
   m_TagString: Untagged
@@ -2700,6 +2700,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599587554221709482, guid: 64611baf63ffb22439af562d211a5707,
+        type: 3}
+      propertyPath: maxLifeValue
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64611baf63ffb22439af562d211a5707, type: 3}

@@ -21,7 +21,6 @@ public class DataManager : SingletonMono<DataManager>
     private Dictionary<int,CardEntity> cardEntitiesDic;
 
 
-
     protected override void Awake()
     {
         base.Awake();
@@ -46,10 +45,12 @@ public class DataManager : SingletonMono<DataManager>
     public CardEntity GetCardEntityById(int id)
     {
         CardEntity cardEntity = null; ;
+
         if (cardEntitiesDic.TryGetValue(id,out cardEntity))
         {
             return cardEntity;
         }
+
         return null;
     }
 

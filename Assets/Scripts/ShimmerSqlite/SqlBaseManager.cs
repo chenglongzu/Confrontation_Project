@@ -116,11 +116,27 @@ namespace ShimmerSqlite
         /// 语法：delete from <表名> [where <删除条件>]　　  
         /// 例：delete from a where name='王伟华'（删除表a中列值为王伟华的行）　
         /// </summary>
-        public void DeleteData(string tableName, string account)
+        public void DeleteData(string tableName, string id)
         {
-            ExcuteSql(string.Format("delete from {0} where account = '{1}'", tableName, account));
+            ExcuteSql(string.Format("delete from {0} where id = '{1}'", tableName, id));
         }
 
+        /// <summary>
+        /// 删除表中的所有数据
+        /// </summary>
+        /// <param name="tableName"></param>
+        public void DeleTableAllData(string tableName)
+        {
+            List<Dictionary<string, object>> temp = GetTableData(tableName);
+            for (int i = 0; i < temp.Count; i++)
+            {
+                if (temp[i].ContainsKey("id"))
+                {
+                    DeleteData(tableName,temp[i]["id"].ToString());
+                }
+            }
+        }
+        
         /// <summary>
         /// 从数据库中删除表
         /// </summary>
@@ -128,6 +144,8 @@ namespace ShimmerSqlite
         {
             ExcuteSql(string.Format("truncate table {0}", tableName));
         }
+
+
         #endregion
 
         #region 改
@@ -188,6 +206,33 @@ namespace ShimmerSqlite
         }
 
         /// <summary>
+        /// 获取表中的所有数据的长度
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public int GetTableLength(string tableName)
+        {
+            return GetTableData(tableName).Count;
+        }
+
+        public bool CheackExitData(string tableName, int id)
+        {
+            List<Dictionary<string, object>> dataArr=GetTableData(tableName);
+            for (int i = 0; i < dataArr.Count; i++)
+            {
+                if (dataArr[i].ContainsKey("id"))
+                {
+                    if (dataArr[i]["id"].ToString() == id.ToString())
+                    {
+                        return true;
+                    } 
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// 按顺序打印数据库中的数值
         /// </summary>
         public void PrintValueInDataBase(string tableName)
@@ -197,7 +242,7 @@ namespace ShimmerSqlite
             //如果表中存在这段数据则返回
             for (int i = 0; i < tableData.Count; i++)
             {
-                string value ="数据表"+tableName+":"+ i + ":";
+                string value ="数据库内容 表： "+tableName+":"+ i + ":";
 
                 foreach (var item in tableData[i])
                 {

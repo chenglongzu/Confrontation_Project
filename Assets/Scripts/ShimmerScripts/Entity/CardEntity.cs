@@ -42,4 +42,9 @@ public class CardEntity : DataBase
     {
         return new string[] { "int", "string", "string", "int", "int", "string" };
     }
+
+    public override string ToString()
+    {
+        return string.Format("当前卡牌数据： Name：{0} FileName:{1} ResourcesPoint:{2} HurtValue:{3} Character:{4}",name,fileName,resourcesPoint,hurtValue,character);
+    }
 }

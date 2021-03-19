@@ -17,6 +17,7 @@ namespace ShimmerFramework
             MonoManager.GetInstance().AddUpdateAction(InputManager.GetInstance().MyUpdate);
 
             DontDestroyOnLoad(gameObject);
+
         }
 
         private void Update()
@@ -25,8 +26,6 @@ namespace ShimmerFramework
             {
                 Application.Quit();
             }
-
-
         }
 
         private void ApplicationInit()

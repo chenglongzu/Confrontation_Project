@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ShimmerSqlite;
 
 public class StartController : MonoBehaviour
 {
@@ -16,8 +17,19 @@ public class StartController : MonoBehaviour
         levelButton = transform.Find("MapCollection").GetComponentsInChildren<UIButton>();
 
         UIEventListener.Get(transform.Find("ChooseCard").gameObject).onClick = (value) => {
-            SceneManager.LoadScene("ChooseCard");
+            SceneManager.LoadSceneAsync("ChooseCard");
         };
+
+        UIEventListener.Get(transform.Find("MapCharacter/CharacterToGame").gameObject).onClick = (value) => {
+            SceneManager.LoadSceneAsync("VS");
+        };
+
+        //将数据库中的数据写入到内存当中
+        BattleManager.GetInstance().GetCardDataFromDataBase();
+
+        transform.Find("ChooseCard/CardCount").GetComponent<UILabel>().text = BattleManager.GetInstance().GetButtleCardLength().ToString();
+
+
     }
 
     private void Update()
@@ -30,11 +42,8 @@ public class StartController : MonoBehaviour
 
                 buttonName = UICamera.hoveredObject.name;
                 ChangeIntroduceText(int.Parse(buttonName.Substring(6, 1)));
-
-                Debug.Log(UICamera.hoveredObject.name);
             }
         }
-
     }
 
     public void ChangeIntroduceText(int id)
