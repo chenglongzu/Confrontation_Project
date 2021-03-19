@@ -15,6 +15,8 @@ namespace ShimmerFramework
         {
             //添加按键检测监听
             MonoManager.GetInstance().AddUpdateAction(InputManager.GetInstance().MyUpdate);
+
+            DontDestroyOnLoad(gameObject);
         }
 
         private void Update()
@@ -23,6 +25,8 @@ namespace ShimmerFramework
             {
                 Application.Quit();
             }
+
+
         }
 
         private void ApplicationInit()
@@ -30,5 +34,8 @@ namespace ShimmerFramework
             Screen.SetResolution(960, 540, false);
             Screen.fullScreen = false;
         }
+
+
+
     }
 }

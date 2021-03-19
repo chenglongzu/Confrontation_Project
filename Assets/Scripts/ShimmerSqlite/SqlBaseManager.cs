@@ -78,14 +78,22 @@ namespace ShimmerSqlite
             //如果表中存在这段数据则返回
             for (int i = 0; i < tableData.Count; i++)
             {
-                if (tableData[i].ContainsValue(dataBase.id))
+                if (tableData[i].ContainsKey(dataBase.id.ToString()))
                 {
-                    Debug.LogError("当前数据已经存在啦啦啦啦");
+                    Debug.Log("当前字典长度："+ tableData[i].Keys);
+
+                    foreach (var item in tableData[i])
+                    {
+                        Debug.Log(item.ToString());
+                    }
+
+                    Debug.Log("当前插入数据已存在：id:"+ dataBase.id +"名称："+ dataBase.NameToArray());
                     return;
                 }
 
             }
 
+            Debug.Log("当前插入数据不存在：id:" + dataBase.id + "名称：" + dataBase.NameToArray());
 
             string sql = "INSERT INTO " + tableName + " VALUES(";
 
@@ -189,7 +197,7 @@ namespace ShimmerSqlite
             //如果表中存在这段数据则返回
             for (int i = 0; i < tableData.Count; i++)
             {
-                string value = i + ":";
+                string value ="数据表"+tableName+":"+ i + ":";
 
                 foreach (var item in tableData[i])
                 {
@@ -226,7 +234,7 @@ namespace ShimmerSqlite
         #region 工具函数 执行Sql函数
         private SqliteDataReader ExcuteSql(string _sql)
         {
-            Debug.Log("Excute Sql :" + _sql);
+            //Debug.Log("Excute Sql :" + _sql);
 
             //创建数据库连接命令（事务管理、命令管理：向数据库发送指令）
             command = connection.CreateCommand();
@@ -241,7 +249,7 @@ namespace ShimmerSqlite
 
         private bool ExecuteScalar(string _sql)
         {
-            Debug.Log("ExecuteScalar Sql :" + _sql);
+            //Debug.Log("ExecuteScalar Sql :" + _sql);
 
             //创建数据库连接命令（事务管理、命令管理：向数据库发送指令）
             command = connection.CreateCommand();
@@ -251,14 +259,14 @@ namespace ShimmerSqlite
 
             int result = System.Convert.ToInt32(command.ExecuteScalar());
 
-            Debug.Log("result " + (result > 0));
+            //Debug.Log("result " + (result > 0));
 
             return (result > 0);
         }
 
         private void ExecuteNonQuery(string _sql)
         {
-            Debug.Log("ExecuteNonQuery Sql :" + _sql);
+            //Debug.Log("ExecuteNonQuery Sql :" + _sql);
 
             //创建数据库连接命令（事务管理、命令管理：向数据库发送指令）
             command = connection.CreateCommand();

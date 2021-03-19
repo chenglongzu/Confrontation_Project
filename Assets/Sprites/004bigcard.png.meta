@@ -1,0 +1,590 @@
+fileFormatVersion: 2
+guid: f52f1ad89e0f89c40931061358fd4a70
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3859655798505956354
+    second: 004bigcard_0
+  - first:
+      213: -3142373032586947452
+    second: 004bigcard_1
+  - first:
+      213: 4182576499811337783
+    second: 004bigcard_2
+  - first:
+      213: -3438571284591860082
+    second: 004bigcard_3
+  - first:
+      213: -2411548621720337324
+    second: 004bigcard_4
+  - first:
+      213: 5508132652241075298
+    second: 004bigcard_5
+  - first:
+      213: 9083547894842896814
+    second: 004bigcard_6
+  - first:
+      213: -1066831043309598817
+    second: 004bigcard_7
+  - first:
+      213: -7257708701965773589
+    second: 004bigcard_0
+  - first:
+      213: 5396724869082136760
+    second: 004bigcard_1
+  - first:
+      213: -7706162191794065329
+    second: 004bigcard_2
+  - first:
+      213: 8914561750405498864
+    second: 004bigcard_3
+  - first:
+      213: 6211766978694904794
+    second: 004bigcard_4
+  - first:
+      213: -790885762910417147
+    second: 004bigcard_5
+  - first:
+      213: -8608463718246035070
+    second: 004bigcard_6
+  - first:
+      213: 5465986126919464178
+    second: 004bigcard_7
+  - first:
+      213: -6313978467521221962
+    second: 004bigcard_8
+  - first:
+      213: 8903671480529277487
+    second: 004bigcard_9
+  - first:
+      213: -8698135049533688258
+    second: 004bigcard_10
+  - first:
+      213: -5927850885786214168
+    second: 004bigcard_11
+  - first:
+      213: -693680163305781611
+    second: 004bigcard_12
+  - first:
+      213: -3034709671511183100
+    second: 004bigcard_13
+  - first:
+      213: -6621156735841529186
+    second: 004bigcard_14
+  - first:
+      213: 6024852878804980267
+    second: 004bigcard_15
+  - first:
+      213: 7270752490358337092
+    second: 004bigcard_16
+  - first:
+      213: -6257933845327938158
+    second: 004bigcard_17
+  - first:
+      213: 1086044661172538474
+    second: 004bigcard_18
+  - first:
+      213: 294501543301213258
+    second: 004bigcard_19
+  - first:
+      213: -4774116534646970650
+    second: 004bigcard_20
+  - first:
+      213: -3719929358281578100
+    second: 004bigcard_21
+  - first:
+      213: 1137022083683327302
+    second: 004bigcard_22
+  - first:
+      213: -775412843325075422
+    second: 004bigcard_23
+  - first:
+      213: -2389957724532837539
+    second: 004bigcard_24
+  - first:
+      213: -2223028041598124561
+    second: 004bigcard_25
+  - first:
+      213: 3012010788235094357
+    second: 004bigcard_26
+  - first:
+      213: 4368398213954152158
+    second: 004bigcard_27
+  - first:
+      213: 750109479373778725
+    second: 004bigcard_28
+  - first:
+      213: -5446886807918332994
+    second: 004bigcard_29
+  - first:
+      213: 4896747161261427559
+    second: 004bigcard_30
+  - first:
+      213: -2249817871384616422
+    second: 004bigcard_31
+  - first:
+      213: 1285292743743186534
+    second: 004bigcard_32
+  - first:
+      213: -7946491489032295505
+    second: 004bigcard_33
+  - first:
+      213: -5295041009259635608
+    second: 004bigcard_34
+  - first:
+      213: 2962796841032555880
+    second: 004bigcard_35
+  - first:
+      213: 7621201089761173041
+    second: 004bigcard_36
+  - first:
+      213: 7171382297130969630
+    second: 004bigcard_37
+  - first:
+      213: 7306309004152769475
+    second: 004bigcard_38
+  - first:
+      213: 1801942876352587042
+    second: 004bigcard_39
+  - first:
+      213: -419273207086984103
+    second: 004bigcard_40
+  - first:
+      213: 8414926005124364782
+    second: 004bigcard_41
+  - first:
+      213: 897005655922115806
+    second: 004bigcard_42
+  - first:
+      213: 6309867922587321122
+    second: 004bigcard_43
+  - first:
+      213: -5021516694814768911
+    second: 004bigcard_44
+  - first:
+      213: 236613857755739920
+    second: 004bigcard_45
+  - first:
+      213: 2916500362382981681
+    second: 004bigcard_46
+  - first:
+      213: 7250383263571225186
+    second: 004bigcard_47
+  - first:
+      213: 160596624198707618
+    second: 004bigcard_48
+  - first:
+      213: -4942624616964096813
+    second: 004bigcard_49
+  - first:
+      213: 7424839994130134310
+    second: 004bigcard_50
+  - first:
+      213: -3982111028041992516
+    second: 004bigcard_51
+  - first:
+      213: 171900165914718528
+    second: 004bigcard_52
+  - first:
+      213: -2608992184800370040
+    second: 004bigcard_53
+  - first:
+      213: -1535281592149203787
+    second: 004bigcard_54
+  - first:
+      213: -6173631004132201880
+    second: 004bigcard_55
+  - first:
+      213: 8350943785046698810
+    second: 004bigcard_56
+  - first:
+      213: -6283922344117725807
+    second: 004bigcard_57
+  - first:
+      213: 7455453518772380244
+    second: 004bigcard_58
+  - first:
+      213: 7473541897267611223
+    second: 004bigcard_59
+  - first:
+      213: -6256860695778522442
+    second: 004bigcard_60
+  - first:
+      213: 5597108669147040182
+    second: 004bigcard_61
+  - first:
+      213: 8611938730110651527
+    second: 004bigcard_62
+  - first:
+      213: 5339925693955350531
+    second: 004bigcard_63
+  - first:
+      213: -6580516005457733464
+    second: 004bigcard_64
+  - first:
+      213: -679221809402011938
+    second: 004bigcard_65
+  - first:
+      213: 8595490346416701490
+    second: 004bigcard_66
+  - first:
+      213: -497388728039845143
+    second: 004bigcard_67
+  - first:
+      213: -5061166515708445548
+    second: 004bigcard_68
+  - first:
+      213: 7412379347356507628
+    second: 004bigcard_69
+  - first:
+      213: 1196703634384659881
+    second: 004bigcard_70
+  - first:
+      213: -1447448256974538900
+    second: 004bigcard_71
+  - first:
+      213: 39527786307590935
+    second: 004bigcard_72
+  - first:
+      213: 332955563231191148
+    second: 004bigcard_73
+  - first:
+      213: -5514069472693546598
+    second: 004bigcard_74
+  - first:
+      213: -5604099468756104281
+    second: 004bigcard_75
+  - first:
+      213: 5642585795743265306
+    second: 004bigcard_76
+  - first:
+      213: 6750878761365426417
+    second: 004bigcard_77
+  - first:
+      213: -8406306793285916086
+    second: 004bigcard_78
+  - first:
+      213: -499172186482411668
+    second: 004bigcard_79
+  - first:
+      213: 7250127442505177930
+    second: 004bigcard_80
+  - first:
+      213: 433484182972608957
+    second: 004bigcard_81
+  - first:
+      213: 7464407775425480982
+    second: 004bigcard_82
+  - first:
+      213: -7174714299053177929
+    second: 004bigcard_83
+  - first:
+      213: 1297819315628115789
+    second: 004bigcard_84
+  - first:
+      213: -2944238044640305630
+    second: 004bigcard_85
+  - first:
+      213: 8588330603691205082
+    second: 004bigcard_86
+  - first:
+      213: -3737634157534164504
+    second: 004bigcard_87
+  - first:
+      213: -30616619230997101
+    second: 004bigcard_88
+  - first:
+      213: -8835571375036089983
+    second: 004bigcard_89
+  - first:
+      213: 5239838589885873025
+    second: 004bigcard_90
+  - first:
+      213: -9094824045732848587
+    second: 004bigcard_91
+  - first:
+      213: -494399197105762166
+    second: 004bigcard_92
+  - first:
+      213: 7629793260926850834
+    second: 004bigcard_93
+  - first:
+      213: 5213130759449586581
+    second: 004bigcard_94
+  - first:
+      213: -4877308646916705781
+    second: 004bigcard_95
+  - first:
+      213: 2231563285799694591
+    second: 004bigcard_96
+  - first:
+      213: -34500189776995924
+    second: 004bigcard_97
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 2
+    aniso: 4
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: 004bigcard_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 514
+        width: 170
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f7443d3ea2e6bb70800000000000000
+      internalID: 8914561750405498864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 004bigcard_4
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 514
+        width: 170
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: adb7c90e721a43650800000000000000
+      internalID: 6211766978694904794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 004bigcard_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 170
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2815b1c9bd7988880800000000000000
+      internalID: -8608463718246035070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 004bigcard_7
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 257
+        width: 170
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f47f322c651bdb40800000000000000
+      internalID: 5465986126919464178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 004bigcard_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 170
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2259b1b902309b70800000000000000
+      internalID: 8903671480529277487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 004bigcard_10
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 0
+        width: 170
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e367b24d1440a4780800000000000000
+      internalID: -8698135049533688258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 004bigcard_11
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 0
+        width: 170
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e06a37c60b0cbda0800000000000000
+      internalID: -5927850885786214168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 004bigcard_12
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 0
+        width: 170
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5968c66119d8f56f0800000000000000
+      internalID: -693680163305781611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

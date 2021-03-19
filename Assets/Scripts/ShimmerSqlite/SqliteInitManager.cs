@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using ShimmerSqlite;
+using System.Collections.Generic;
 
 public class SqliteInitManager : MonoBehaviour
 {
@@ -7,21 +8,39 @@ public class SqliteInitManager : MonoBehaviour
     private string gameDataBase;
 
     [SerializeField]
-    private string tableName;
+    private string[] tableName;
+
+    [SerializeField]
+    private CardEntity[] cardEntities;
 
     void Start()
     {
         SqlManager.GetInstance().InitDataBase(gameDataBase);
-
-        if (!SqlManager.GetInstance().DetectionExistTable(tableName))
+        
+        for (int i = 0; i < tableName.Length; i++)
         {
-            SqlManager.GetInstance().CreateTable(tableName, new CardEntity());
+            //dataBaseList.Add(tableName[i],new List<Dictionary<string, object>>());    
         }
-       
 
+        //创建数据表
+        for (int i = 0; i < tableName.Length; i++)
+        {
+            //第一次创建Sqlite表
+            if (!SqlManager.GetInstance().DetectionExistTable(tableName[i]))
+            {
+                SqlManager.GetInstance().CreateTable(tableName[i], new CardEntity());
 
-        SqlManager.GetInstance().PrintValueInDataBase(tableName);
+                if (tableName[i]== "OwnCard")
+                {
+                    Debug.Log(1111);
+                    for (int j = 1; j < 5; j++)
+                    {
+                        SqlManager.GetInstance().Insert(tableName[i], DataManager.GetInstance().GetCardEntityById(j));
+                    }
+                }
+            }
 
-
+            SqlManager.GetInstance().PrintValueInDataBase(tableName[i]);
+        }
     }
 }

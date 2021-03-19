@@ -9,12 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/star.unity
+    path: Assets/Scenes/Start.unity
     guid: 354e69e61add50146afa2ad279de0bd6
+  - enabled: 1
+    path: Assets/Scenes/ChooseCard.unity
+    guid: 4e9dc81e70d35b4418a64243d4a7c208
   - enabled: 1
     path: Assets/Scenes/VS.unity
     guid: 0973298697178d243982473ff16e28d7
-  - enabled: 1
-    path: Assets/Scenes/Cardgroup.unity
-    guid: 4e9dc81e70d35b4418a64243d4a7c208
   m_configObjects: {}

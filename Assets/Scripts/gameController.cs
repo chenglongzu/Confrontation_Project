@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class gameController : MonoBehaviour
 {
-    public GameObject cardPrefefab;
+    private GameObject cardPrefefab;
     public Transform fromcard;
     public Transform tocard;
     public string[]cardnames;
@@ -19,6 +19,10 @@ public class gameController : MonoBehaviour
 
     private UISprite nowGenerateCard;
 
+    private void Start()
+    {
+        cardPrefefab = Resources.Load<GameObject>("Card");
+    }
 
     void Update()
     {
@@ -33,7 +37,7 @@ public class gameController : MonoBehaviour
             int index = (int)(timer / (1f / transformSpeed));
             index %= cardnames.Length;
 
-            nowGenerateCard.spriteName  = cardnames[index];
+            //nowGenerateCard.spriteName  = cardnames[index];
 
 
 
@@ -52,18 +56,5 @@ public class gameController : MonoBehaviour
         go.transform.position = fromcard.position;
         iTween.MoveTo(go, tocard.position, 1f);
         isTransforming = true;
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
 }
