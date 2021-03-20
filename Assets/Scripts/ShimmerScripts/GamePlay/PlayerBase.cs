@@ -12,6 +12,7 @@ public class PlayerBase : MonoBehaviour
 
     public void SetCurrtenCard(CardEntity currtenCard)
     {
+        lifeValue = DataManager.GetInstance().maxLifeValue;
         isPlayed = true;
         this.currtenCard = currtenCard;
     }

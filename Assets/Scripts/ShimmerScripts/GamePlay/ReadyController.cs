@@ -22,6 +22,7 @@ public class ReadyController : MonoBehaviour
 
         //绑定事件，动态添加卡牌并存储到数据库
         CardButtonAddListen();
+
     }
 
     /// <summary>
@@ -44,7 +45,10 @@ public class ReadyController : MonoBehaviour
         //点击确定开始战斗
         UIEventListener.Get(transform.Find("OK").gameObject).onClick = (value) => {
             BattleManager.GetInstance().StoreMatchCardCardToDataBase();
-            SceneManager.LoadScene("VS");
+
+            Debug.Log("卡牌数量1：" + BattleManager.GetInstance().GetButtleCardLength());
+
+            SceneManager.LoadSceneAsync("VS");
         };
 
         //点击查看卡组

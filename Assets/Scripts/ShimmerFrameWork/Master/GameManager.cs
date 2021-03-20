@@ -34,7 +34,5 @@ namespace ShimmerFramework
             Screen.fullScreen = false;
         }
 
-
-
     }
 }

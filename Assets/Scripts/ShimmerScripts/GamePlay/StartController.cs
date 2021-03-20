@@ -28,8 +28,6 @@ public class StartController : MonoBehaviour
         BattleManager.GetInstance().GetCardDataFromDataBase();
 
         transform.Find("ChooseCard/CardCount").GetComponent<UILabel>().text = BattleManager.GetInstance().GetButtleCardLength().ToString();
-
-
     }
 
     private void Update()

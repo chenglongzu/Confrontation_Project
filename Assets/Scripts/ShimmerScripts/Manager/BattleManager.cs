@@ -9,19 +9,19 @@ public class BattleManager : SingletonMono<BattleManager>
 {
     //玩家牌库资源
     private List<CardEntity> playerCardsList;
-    private Dictionary<int, List<CardEntity>> playerCradsDic;
+    private Dictionary<int, Queue<CardEntity>> playerCradsDic;
 
     //玩家手牌资源
     private List<CardEntity> playerRoundCardList;
-    private Dictionary<int, List<CardEntity>> playerRoundCardDic;
+    private Dictionary<int, Queue<CardEntity>> playerRoundCardDic;
 
     //AI牌库资源
     private List<CardEntity> aiCardList;
-    private Dictionary<int, List<CardEntity>> aiCardDic;
+    private Dictionary<int, Queue<CardEntity>> aiCardDic;
 
     //AI手牌资源
     private List<CardEntity> aiRoundCardList;
-    private Dictionary<int, List<CardEntity>> aiRoundCardDic;
+    private Dictionary<int, Queue<CardEntity>> aiRoundCardDic;
 
     //玩家和AI
     private PlayerBase userPlayer;
@@ -32,20 +32,21 @@ public class BattleManager : SingletonMono<BattleManager>
         base.Awake();
 
         playerCardsList = new List<CardEntity>();
-        playerCradsDic = new Dictionary<int, List<CardEntity>>();
+        playerCradsDic = new Dictionary<int, Queue<CardEntity>>();
 
         aiCardList = new List<CardEntity>();
-        aiCardDic = new Dictionary<int, List<CardEntity>>();
+        aiCardDic = new Dictionary<int, Queue<CardEntity>>();
 
         playerRoundCardList = new List<CardEntity>();
-        playerRoundCardDic = new Dictionary<int, List<CardEntity>>();
+        playerRoundCardDic = new Dictionary<int, Queue<CardEntity>>();
 
         aiRoundCardList = new List<CardEntity>();
-        aiRoundCardDic = new Dictionary<int, List<CardEntity>>();
+        aiRoundCardDic = new Dictionary<int, Queue<CardEntity>>();
     }
 
     private void Start()
     {
+
     }
 
     #region CardToBattle战斗
@@ -117,16 +118,17 @@ public class BattleManager : SingletonMono<BattleManager>
         {
             if (playerRoundCardDic.ContainsKey(playerRoundCardList[i].id))
             {
-                playerRoundCardDic[playerRoundCardList[i].id].Add(playerRoundCardList[i]);
+                playerRoundCardDic[playerRoundCardList[i].id].Enqueue(playerRoundCardList[i]);
             }else
             {
-                playerRoundCardDic.Add(playerRoundCardList[i].id, new List<CardEntity>() { playerRoundCardList[i] });
+                playerRoundCardDic.Add(playerRoundCardList[i].id, new Queue<CardEntity>());
+                playerRoundCardDic[playerRoundCardList[i].id].Enqueue(playerRoundCardList[i]);
             }
 
             Debug.Log(string.Format("玩家手牌分别为：id：{0}，name：{1}", playerRoundCardList[i].id, playerRoundCardList[i].name));
         }
 
-        aiPlayer = new PlayerBase();
+        userPlayer = new PlayerBase();
     }
 
     /// <summary>
@@ -140,14 +142,15 @@ public class BattleManager : SingletonMono<BattleManager>
         {
             if (aiRoundCardDic.ContainsKey(aiRoundCardList[i].id))
             {
-                aiRoundCardDic[aiRoundCardList[i].id].Add(aiRoundCardList[i]);
+                aiRoundCardDic[aiRoundCardList[i].id].Enqueue(aiRoundCardList[i]);
             }
             else
             {
-                aiRoundCardDic.Add(aiRoundCardList[i].id, new List<CardEntity>() { aiRoundCardList[i] });
+                aiRoundCardDic.Add(aiRoundCardList[i].id, new Queue<CardEntity>());
+                aiRoundCardDic[aiRoundCardList[i].id].Enqueue(aiRoundCardList[i]);
             }
 
-            Debug.Log(string.Format("AI手牌分别为：id：{0}，name：{1}", playerRoundCardList[i].id, playerRoundCardList[i].name));
+            Debug.Log(string.Format("AI手牌分别为：id：{0}，name：{1}", aiRoundCardList[i].id, aiRoundCardList[i].name));
         }
 
         aiPlayer = new PlayerBase();
@@ -158,8 +161,9 @@ public class BattleManager : SingletonMono<BattleManager>
     /// </summary>
     /// <param name="playerCards"></param>
     /// <returns></returns>
-    private List<CardEntity> GetRandomCard(List<CardEntity> cardsList, Dictionary<int, List<CardEntity>>cardsDic)
+    private List<CardEntity> GetRandomCard(List<CardEntity> cardsList, Dictionary<int, Queue<CardEntity>>cardsDic)
     {
+        Debug.Log(string.Format("List长度：{0}，Dic长度：{1}",cardsList.Count,cardsDic.Count));
         List<CardEntity> newPlayerCardList = cardsList;
 
         for (int i = 0; i < newPlayerCardList.Count; i++)
@@ -179,21 +183,22 @@ public class BattleManager : SingletonMono<BattleManager>
         {
             CardEntity tempCardEntity = newPlayerCardList[i];
 
-            cardsDic[tempCardEntity.id].RemoveAt(0);
+            if (cardsDic.ContainsKey(tempCardEntity.id))
+            {
+                cardsDic[tempCardEntity.id].Dequeue();
+            }
 
-            returnPlayerCardList.Add(newPlayerCardList[i]);
+            returnPlayerCardList.Add(tempCardEntity);
         }
 
-        cardsList.Clear();
+        int length = 0;
+
         foreach (var item in cardsDic)
         {
-            for (int i = 0; i < item.Value.Count; i++)
-            {
-                cardsList.Add(item.Value[i]);
-            }
+            length += item.Value.Count;
         }
 
-        Debug.Log("当前牌库数量：" + cardsList.Count);
+        Debug.Log("当前牌库数量：" + cardsDic.Count);
 
         return returnPlayerCardList;
     }
@@ -217,12 +222,18 @@ public class BattleManager : SingletonMono<BattleManager>
 
                 if (aiCardDic.ContainsKey(cardEntity.id))
                 {
-                    aiCardDic[cardEntity.id].Add(cardEntity);
+                    aiCardDic[cardEntity.id].Enqueue(cardEntity);
                 }else
                 {
-                    aiCardDic.Add(cardEntity.id,new List<CardEntity>() { cardEntity });
+                    aiCardDic.Add(cardEntity.id,new Queue<CardEntity>());
+                    aiCardDic[cardEntity.id].Enqueue(cardEntity);
                 }
             }
+        }
+
+        for (int i = 0; i < aiCardList.Count; i++)
+        {
+            Debug.Log(string.Format("AI牌库资源id：{0} name：{1}", aiCardList[i].id, aiCardList[i].name));
         }
     }
     #endregion
@@ -239,10 +250,11 @@ public class BattleManager : SingletonMono<BattleManager>
 
         if (playerCradsDic.ContainsKey(entity.id))
         {
-            playerCradsDic[entity.id].Add(entity);
+            playerCradsDic[entity.id].Enqueue(entity);
         }else
         {
-            playerCradsDic.Add(entity.id, new List<CardEntity>() { entity });
+            playerCradsDic.Add(entity.id, new Queue<CardEntity>());
+            playerCradsDic[entity.id].Enqueue(entity);
         }
     }
 
@@ -259,7 +271,7 @@ public class BattleManager : SingletonMono<BattleManager>
 
         if (playerCradsDic.ContainsKey(entity.id))
         {
-            playerCradsDic[entity.id].Remove(entity);
+            playerCradsDic[entity.id].Dequeue();
         }
     }
 
@@ -378,12 +390,14 @@ public class BattleManager : SingletonMono<BattleManager>
             CardEntity tempCardEntity = new CardEntity(id, name, fileName, resourcesPoint, hurtValue, character);
 
             AddCardToBattle(tempCardEntity);
-            Debug.Log("当前玩家牌库内容为："+tempCardEntity.ToString());
+            Debug.Log("玩家牌库资源："+tempCardEntity.ToString());
         }
 
     }
     public void ClearCardCollection()
     {
+        Debug.Log("调用的重置方法");
+
         playerCardsList.Clear();
         playerCradsDic.Clear();
     }
