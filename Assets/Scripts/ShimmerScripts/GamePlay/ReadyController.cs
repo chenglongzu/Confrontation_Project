@@ -12,6 +12,8 @@ public class ReadyController : MonoBehaviour
     private UILabel usedPoint;
 
     private UILabel cartCount;
+
+    private GameObject showPanel;
     void Start()
     {
         cardButtons = transform.Find("Background/CardCollection").GetComponentsInChildren<UIButton>();
@@ -20,8 +22,40 @@ public class ReadyController : MonoBehaviour
         usedPoint = transform.Find("ResourcesPoint/UsedPoint").GetComponent<UILabel>();
         cartCount = transform.Find("CardCountLable/CardConut").GetComponent<UILabel>();
 
+        showPanel = transform.Find("ShowPanel").gameObject;
+
         //绑定事件，动态添加卡牌并存储到数据库
         CardButtonAddListen();
+    }
+
+    [Obsolete]
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (UICamera.isOverUI)
+            {
+                if (UICamera.hoveredObject.name.Contains("Card_"))
+                {
+                    Debug.Log("oooooooooooooooooooooooooooooo");
+                    ShowShowSprite(DataManager.GetInstance().GetCardEntityById(Convert.ToInt32(UICamera.hoveredObject.name.Substring(5, 1))));
+                }
+
+                if (UICamera.hoveredObject.name.Contains("ShowPanel"))
+                {
+                    showPanel.SetActive(false);
+                }
+
+            }
+        }
+
+        //if (showPanel.active)
+        //{
+        //    if (Input.GetMouseButtonDown(1))
+        //    {
+        //        showPanel.SetActive(false);
+        //    }
+        //}
 
     }
 
@@ -123,5 +157,16 @@ public class ReadyController : MonoBehaviour
         }
 
         BattleManager.GetInstance().StoreMatchCardCardToDataBase();
+    }
+
+    /// <summary>
+    /// 展示展示卡片
+    /// </summary>
+    private void ShowShowSprite(CardEntity cardEntity)
+    {
+        showPanel.SetActive(true);
+
+        showPanel.transform.Find("ShowSprite").GetComponent<UISprite>().spriteName = "Card_" + cardEntity.id;
+        showPanel.transform.Find("ShowTextBackground/Label").GetComponent<UILabel>().text = cardEntity.character;
     }
 }

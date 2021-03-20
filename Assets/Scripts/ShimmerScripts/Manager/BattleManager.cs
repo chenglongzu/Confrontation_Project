@@ -24,8 +24,8 @@ public class BattleManager : SingletonMono<BattleManager>
     private Dictionary<int, Queue<CardEntity>> aiRoundCardDic;
 
     //玩家和AI
-    private PlayerBase userPlayer;
-    private PlayerBase aiPlayer;
+    public PlayerBase userPlayer;
+    public PlayerBase aiPlayer;
 
     protected override void Awake()
     {
@@ -44,49 +44,53 @@ public class BattleManager : SingletonMono<BattleManager>
         aiRoundCardDic = new Dictionary<int, Queue<CardEntity>>();
     }
 
-    private void Start()
-    {
-
-    }
-
     #region CardToBattle战斗
     /// <summary>
     /// 开始一个回合的战斗
     /// </summary>
     /// <param name="firstTime"></param>
     /// <param name="SecondTime"></param>
-    public void StartRound(Action dectectTime)
+    public void StartRound(Action firstDectect, Action secondDectect, Action overTime, Action<float> realTimeCallBack)
     {
-        StartCoroutine(CountDownNumber(3, dectectTime));
+        StartCoroutine(CountDownNumber(3, firstDectect, secondDectect, overTime, realTimeCallBack));
     }
 
-    private IEnumerator CountDownNumber(float time, Action dectectTime)
+    private IEnumerator CountDownNumber(float time, Action firstDectect, Action secondDectect, Action overTime, Action<float> realTimeCallBack)
     {
-        bool firstTimeExcute=false;
+        bool firstTimeExcute = false;
+        bool secondTimeExcute = false;
 
-        while (true)
+        while (time >= 0)
         {
             yield return null;
 
             time -= Time.deltaTime;
 
-            if (time <= 1)
+            if (time <= 2)
             {
                 if (!firstTimeExcute)
                 {
-                    dectectTime();
+                    firstDectect();
                     firstTimeExcute = true;
                 }
             }
 
-            if (time <= 0)
+            if (time <= 1)
             {
-                userPlayer.isPlayed = false;
-                aiPlayer.isPlayed = false;
-
-                StopCoroutine("CountDownNumber");
+                if (!secondTimeExcute)
+                {
+                    secondDectect();
+                    secondTimeExcute = true;
+                }
             }
+
+            realTimeCallBack(time);
+
         }
+
+        overTime();
+        StopCoroutine("CountDownNumber");
+
     }
 
     public void ToCard(CardEntity playerCard, CardEntity aiCard)
@@ -112,14 +116,14 @@ public class BattleManager : SingletonMono<BattleManager>
     /// </summary>
     public void PlayRandomGetCardToBattle()
     {
-        playerRoundCardList=GetRandomCard(playerCardsList,playerCradsDic);
+        playerRoundCardList = GetDataFromList(5,playerCardsList, playerCradsDic);
 
         for (int i = 0; i < playerRoundCardList.Count; i++)
         {
             if (playerRoundCardDic.ContainsKey(playerRoundCardList[i].id))
             {
                 playerRoundCardDic[playerRoundCardList[i].id].Enqueue(playerRoundCardList[i]);
-            }else
+            } else
             {
                 playerRoundCardDic.Add(playerRoundCardList[i].id, new Queue<CardEntity>());
                 playerRoundCardDic[playerRoundCardList[i].id].Enqueue(playerRoundCardList[i]);
@@ -136,7 +140,7 @@ public class BattleManager : SingletonMono<BattleManager>
     /// </summary>
     public void AiRandomGetCardToBattle()
     {
-        aiRoundCardList = GetRandomCard(aiCardList, aiCardDic);
+        aiRoundCardList = GetDataFromList(5,aiCardList, aiCardDic);
 
         for (int i = 0; i < aiRoundCardList.Count; i++)
         {
@@ -156,14 +160,40 @@ public class BattleManager : SingletonMono<BattleManager>
         aiPlayer = new PlayerBase();
     }
 
+
+    public List<CardEntity> GetDataFromList(int value, List<CardEntity> cardsList, Dictionary<int, Queue<CardEntity>> cardsDic)
+    {
+        Debug.Log(string.Format("List长度：{0}，Dic长度：{1}", cardsList.Count, cardsDic.Count));
+
+        List<CardEntity> tempPlayerCardList = GetRandomList(cardsList);
+
+        List<CardEntity> returnPlayerCardList = new List<CardEntity>();
+
+        for (int i = 0; i < value; i++)
+        {
+            CardEntity tempCardEntity = tempPlayerCardList[0];
+
+            tempPlayerCardList.RemoveAt(0);
+
+            if (cardsDic.ContainsKey(tempCardEntity.id))
+            {
+                cardsDic[tempCardEntity.id].Dequeue();
+            }
+
+            returnPlayerCardList.Add(tempCardEntity);
+        }
+
+        Debug.Log("当前牌库数量List：" + tempPlayerCardList.Count);
+        return returnPlayerCardList;
+    }
+
     /// <summary>
-    /// 获得随机五张手牌
+    /// 将传递进来的List顺序打乱
     /// </summary>
     /// <param name="playerCards"></param>
     /// <returns></returns>
-    private List<CardEntity> GetRandomCard(List<CardEntity> cardsList, Dictionary<int, Queue<CardEntity>>cardsDic)
+    private List<CardEntity> GetRandomList(List<CardEntity> cardsList)
     {
-        Debug.Log(string.Format("List长度：{0}，Dic长度：{1}",cardsList.Count,cardsDic.Count));
         List<CardEntity> newPlayerCardList = cardsList;
 
         for (int i = 0; i < newPlayerCardList.Count; i++)
@@ -177,31 +207,33 @@ public class BattleManager : SingletonMono<BattleManager>
             newPlayerCardList[ran] = temp;
         }
 
-        List<CardEntity> returnPlayerCardList = new List<CardEntity>();
-
-        for (int i = 0; i < 5; i++)
-        {
-            CardEntity tempCardEntity = newPlayerCardList[i];
-
-            if (cardsDic.ContainsKey(tempCardEntity.id))
-            {
-                cardsDic[tempCardEntity.id].Dequeue();
-            }
-
-            returnPlayerCardList.Add(tempCardEntity);
-        }
-
-        int length = 0;
-
-        foreach (var item in cardsDic)
-        {
-            length += item.Value.Count;
-        }
-
-        Debug.Log("当前牌库数量：" + cardsDic.Count);
-
-        return returnPlayerCardList;
+        return newPlayerCardList;
     }
+
+    /// <summary>
+    /// 获取AI的回合卡牌
+    /// </summary>
+    public List<CardEntity> GetAiRoundCardList()
+    {
+        return aiRoundCardList;
+    }
+    public Dictionary<int, Queue<CardEntity>> GetAiRoundCardDic()
+    {
+        return aiRoundCardDic;
+    }
+
+    /// <summary>
+    /// 获取玩家的回合卡牌
+    /// </summary>
+    public List<CardEntity> GetPlayerRoundCardList()
+    {
+        return playerRoundCardList;
+    }
+    public Dictionary<int,Queue<CardEntity>> GetPlayerRoundCardDic()
+    {
+        return playerRoundCardDic;
+    }
+
     #endregion
 
     #region CardReadyToBattle 牌库
@@ -326,6 +358,15 @@ public class BattleManager : SingletonMono<BattleManager>
     }
 
     /// <summary>
+    /// 获得AI牌库卡牌的数量
+    /// </summary>
+    /// <returns></returns>
+    public int GetAiButtleCardLength()
+    {
+        return aiCardList.Count;
+    }
+
+    /// <summary>
     /// 将组装的卡牌存储进入数据库
     /// </summary>
     public void StoreMatchCardCardToDataBase()
@@ -394,10 +435,12 @@ public class BattleManager : SingletonMono<BattleManager>
         }
 
     }
+    
+    /// <summary>
+    /// 重置内存中的数据结构
+    /// </summary>
     public void ClearCardCollection()
     {
-        Debug.Log("调用的重置方法");
-
         playerCardsList.Clear();
         playerCradsDic.Clear();
     }
