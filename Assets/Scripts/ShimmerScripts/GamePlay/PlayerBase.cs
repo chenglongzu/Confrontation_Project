@@ -12,12 +12,15 @@ public class PlayerBase : MonoBehaviour
 
     public CardEntity currtenCard;
 
-    //血量扣光执行的委托
-    public Action DiedAction;
+    //掉血执行的委托
+    public Action<int> DropBloodAction;
+    //添加手牌委托
+    public Action<int> AddCardAction;
 
-    public void AddDiedActionListener(Action action)
+    public void AddActionListener(Action<int> dropBloodAction, Action<int> addCardAction)
     {
-        this.DiedAction += action;
+        this.DropBloodAction += dropBloodAction;
+        this.AddCardAction += addCardAction;
     }
 
     /// <summary>
@@ -56,10 +59,12 @@ public class PlayerBase : MonoBehaviour
                 //无特殊情况 正常发动伤害  （已完成逻辑）
                 break;
             case 3:
-                //抽1张牌，格挡对手本次造成的伤害  （抽牌逻辑未完成）
+                AddCardAction(1);
+                //抽1张牌，格挡对手本次造成的伤害  （逻辑已完成）
                 break;
             case 4:
-                //抽3张牌   （抽牌逻辑未完成）
+                AddCardAction(3);
+                //抽3张牌   （逻辑已完成）
                 break;
             case 5:
                 ExtraHurtValue(2);
@@ -102,16 +107,16 @@ public class PlayerBase : MonoBehaviour
                 case 3:
                     if (emeryCard.id != 7)
                     {
-                        this.lifeValue -= 0;
+                        CutLifeValue(0);
                     }
                     else
                     {
-                        this.lifeValue -= emeryCard.hurtValue;
+                        CutLifeValue(emeryCard.hurtValue);
                     }
                     return;
-                //抽1张牌，格挡对手本次造成的伤害 （抽牌逻辑未完成）
+                //抽1张牌，格挡对手本次造成的伤害 （逻辑已完成）
                 case 4:
-                    //抽3张牌 （抽牌逻辑未完成）
+                    //抽3张牌 （逻辑已完成）
                     break;
                 case 5:
                     //造成3点伤害，对自身造成2点伤害  （已完成逻辑）
@@ -119,6 +124,7 @@ public class PlayerBase : MonoBehaviour
                 case 6:
                     if (emeryCard.hurtValue == 0)
                     {
+                        CutLifeValue(0);
                         lifeValue = DataManager.GetInstance().maxLifeValue;
                     }
                     //若本次未受到伤害，恢复满生命    （已完成逻辑）
@@ -129,11 +135,11 @@ public class PlayerBase : MonoBehaviour
                 case 8:
                     if (emeryCard.id != 7)
                     {
-                        this.lifeValue -= 0;
+                        CutLifeValue(0);
                     }
                     else
                     {
-                        this.lifeValue -= emeryCard.hurtValue;
+                        CutLifeValue(emeryCard.hurtValue);
                         return;
                     }
 
@@ -149,25 +155,28 @@ public class PlayerBase : MonoBehaviour
         switch (emeryCard.id)
         {
             case 1:
-                this.lifeValue -= emeryCard.hurtValue;  //（已完成逻辑正常收到伤害）
+                CutLifeValue(emeryCard.hurtValue);
+                 //（已完成逻辑正常收到伤害）
                 break;
             case 2:
-                this.lifeValue -= emeryCard.hurtValue;  //（已完成逻辑正常受到伤害）
+                CutLifeValue(emeryCard.hurtValue);
+                //（已完成逻辑正常受到伤害）
                 break;
             case 3:
-                //抽1张牌，格挡对手本次造成的伤害 伤害为0 （抽牌逻辑未完成）
+                //抽1张牌，格挡对手本次造成的伤害 伤害为0 （逻辑已完成）
                 break;
             case 4:
-                //抽3张牌 伤害为0 （抽牌逻辑未完成）
+                //抽3张牌 伤害为0 （逻辑已完成）
                 break;
             case 5:
-                this.lifeValue -= emeryCard.hurtValue;  //造成3点伤害，对自身造成2点伤害（已完成逻辑，另外在对手逻辑中）
+                CutLifeValue(emeryCard.hurtValue);
+                //造成3点伤害，对自身造成2点伤害（已完成逻辑，另外在对手逻辑中）
                 break;
             case 6:
                 //若本次未受到伤害，恢复满生命    （已完成逻辑，在持有卡片逻辑中）
                 break;
             case 7:
-                this.lifeValue -= emeryCard.hurtValue;
+                CutLifeValue(emeryCard.hurtValue);
                 //造成1点不可被格挡的伤害  （已完成逻辑，在每次格挡卡片中调用）
                 break;
             case 8:
@@ -196,11 +205,7 @@ public class PlayerBase : MonoBehaviour
     {
         this.lifeValue -= value;
 
-        if (lifeValue<=0)
-        {
-            //游戏结束调用委托方法
-            DiedAction();
-        }
+        DropBloodAction(lifeValue);
     }
 
     /// <summary>

@@ -112,11 +112,17 @@ public class BattleManager : SingletonMono<BattleManager>
 
     #region GetRoundCard 手牌
     /// <summary>
-    /// 玩家获取随机五张手牌并存储起来 游戏开始
+    /// 玩家获取随机手牌并存储起来 游戏开始
     /// </summary>
-    public void PlayRandomGetCardToBattle()
+    public bool PlayRandomGetCardToBattle(int value)
     {
-        playerRoundCardList = GetDataFromList(5,playerCardsList, playerCradsDic);
+        if (value > playerCardsList.Count) return false;
+
+        List<CardEntity> tempList = GetDataFromList(value, playerCardsList, playerCradsDic);
+        for (int i = 0; i < tempList.Count; i++)
+        {
+            playerRoundCardList.Add(tempList[i]);
+        }
 
         for (int i = 0; i < playerRoundCardList.Count; i++)
         {
@@ -133,14 +139,22 @@ public class BattleManager : SingletonMono<BattleManager>
         }
 
         userPlayer = new PlayerBase();
+
+        return true;
     }
 
     /// <summary>
-    /// AI获取随机五张手牌并存储起来 游戏开始
+    /// AI获取随机手牌并存储起来 游戏开始
     /// </summary>
-    public void AiRandomGetCardToBattle()
+    public bool AiRandomGetCardToBattle(int value)
     {
-        aiRoundCardList = GetDataFromList(5,aiCardList, aiCardDic);
+        if (value > aiCardList.Count) return false;
+
+        List<CardEntity> tempList = GetDataFromList(value, aiCardList, aiCardDic);
+        for (int i = 0; i < tempList.Count; i++)
+        {
+            aiRoundCardList.Add(tempList[i]);
+        }
 
         for (int i = 0; i < aiRoundCardList.Count; i++)
         {
@@ -158,6 +172,8 @@ public class BattleManager : SingletonMono<BattleManager>
         }
 
         aiPlayer = new PlayerBase();
+
+        return true;
     }
 
 
