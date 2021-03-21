@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,9 +8,13 @@ public class VSController : MonoBehaviour
     [SerializeField]
     private Color32[] timeColor;
 
-    [SerializeField]
-    private Vector3 targetPos;
+    private float aiAttackTime;
 
+    //两位玩家 AI和角色
+    private PlayerBase aiPlayer;
+    private PlayerBase userPlayer;
+
+    #region 场景动画索引
     //两个卡片集的动画位置
     [SerializeField]
     private Vector3 userCardCollectionTargetPos;
@@ -21,10 +26,14 @@ public class VSController : MonoBehaviour
     [SerializeField]
     private Vector3 aiCardCollectionOriPos;
 
-    //两位玩家 AI和角色
-    private PlayerBase aiPlayer;
-    private PlayerBase userPlayer;
+    [SerializeField]
+    private Vector3 playerTargetPos;
 
+    [SerializeField]
+    private Vector3 aiTargetPos;
+    #endregion
+
+    #region 场景物体索引
     //倒计时的Lable索引
     private UILabel countDownLable;
 
@@ -37,17 +46,22 @@ public class VSController : MonoBehaviour
     //AI卡牌的图片
     private UISprite[] aiCardSprite;
 
+    //玩家和AI卡牌的动画脚本
+    private GameObject userCardCollection;
+    private GameObject aiCardCollection;
+
+    #endregion
+
+    #region 实体类数据结构
     //玩家和AI的手牌实体类List
     private List<CardEntity> playerRoundCardList;
     private Dictionary<int, Queue<CardEntity>> playerRoundCardDic;
 
     private List<CardEntity> aiRoundCardList;
     private Dictionary<int, Queue<CardEntity>> aiRoundCardDic;
+    #endregion
 
-    //玩家和AI卡牌的动画脚本
-    private GameObject userCardCollection;
-    private GameObject aiCardCollection;
-
+    #region 游戏占位符
     private bool isStart=true;  //当前点击空格键是开始游戏还是暂停游戏
     private bool isFirst=true;       //是否为第一次点击空格键
 
@@ -55,8 +69,18 @@ public class VSController : MonoBehaviour
 
     private bool isCanBePause=true; //是否可以暂停
 
-    private GameObject currtenCard;     //当前出的牌
-    private GameObject tempUsedCard;
+    private bool isPlayerSuppled;   //玩家是否被补充卡牌
+    private bool isAiSuppled;       //AI是否被补充卡牌
+    #endregion
+
+    #region 实例化物体和索引
+    private GameObject playerTempUsedCard;
+    private GameObject aiTempUsedCard;
+
+    private GameObject currtenPlayerCard;     //当前出的牌
+    private GameObject currtenAiCard;     //当前出的牌
+    #endregion
+
     void Start()
     {
         InitCardData();
@@ -114,7 +138,8 @@ public class VSController : MonoBehaviour
         aiCardSprite = transform.Find("CardCollection/AICardCollection").GetComponentsInChildren<UISprite>();
 
         //加载资源索引
-        tempUsedCard = Resources.Load<GameObject>("UserCard_Temp");
+        playerTempUsedCard = Resources.Load<GameObject>("UserCard_Temp");
+        aiTempUsedCard = Resources.Load<GameObject>("AICard_Temp");
     }
 
     /// <summary>
@@ -152,8 +177,8 @@ public class VSController : MonoBehaviour
         RefashSceneCardData();
 
         //设置两个玩家的初始生命值
-        aiPlayer.lifeValue = DataManager.GetInstance().maxLifeValue;
-        userPlayer.lifeValue = DataManager.GetInstance().maxLifeValue;
+        aiPlayer.SetLifeValue(DataManager.GetInstance().maxLifeValue);
+        userPlayer.SetLifeValue(DataManager.GetInstance().maxLifeValue);
     }
 
     /// <summary>
@@ -174,7 +199,7 @@ public class VSController : MonoBehaviour
     }
 
     /// <summary>
-    /// 移除手牌数据结构中的实体数据，当前方法只移除List数据结构中的数据
+    /// 移除玩家手牌数据结构中的实体数据，当前方法只移除List数据结构中的数据
     /// </summary>
     /// <param name="cardEntity"></param>
     private void RemoveUserCardEntity(CardEntity cardEntity)
@@ -190,7 +215,6 @@ public class VSController : MonoBehaviour
     /// </summary>
     private void RefashSceneCardData()
     {
-        Debug.Log("3目前手牌长度为：" + playerRoundCardList.Count);
         //为玩家手牌图片附上当前玩家的手牌数据 调用则刷新
         for (int i = 0; i < playerCardSprite.Length; i++)
         {
@@ -208,7 +232,11 @@ public class VSController : MonoBehaviour
         //刷新AI的卡牌数据
         for (int i = 0; i < aiCardSprite.Length; i++)
         {
-            if (i >= aiRoundCardList.Count)
+            Debug.Log("AICount:"+aiRoundCardList.Count);
+            if (i < aiRoundCardList.Count)
+            {
+                aiCardSprite[i].gameObject.name = "AICard_" + aiRoundCardList[i].id;
+            }else
             {
                 aiCardSprite[i].gameObject.SetActive(false);
             }
@@ -230,6 +258,32 @@ public class VSController : MonoBehaviour
     {
         transform.Find("BittleGround/PlayerCardGroup/Label").GetComponent<UILabel>().text = BattleManager.GetInstance().GetButtleCardLength().ToString();
         transform.Find("BittleGround/AICardGroup/Label").GetComponent<UILabel>().text = BattleManager.GetInstance().GetAiButtleCardLength().ToString();
+
+        //添加玩家和AI的生命值的体现
+        int aiLife = BattleManager.GetInstance().aiPlayer.lifeValue;
+        int userLife = BattleManager.GetInstance().userPlayer.lifeValue;
+
+        for (int i = 0; i < aiHealthSprite.Length; i++)
+        {
+            if (i<aiLife)
+            {
+                aiHealthSprite[i].gameObject.SetActive(true);
+            }else
+            {
+                aiHealthSprite[i].gameObject.SetActive(false);
+            }
+        }
+        for (int i = 0; i < playerHealthSprite.Length; i++)
+        {
+            if (i < userLife)
+            {
+                playerHealthSprite[i].gameObject.SetActive(true);
+            }else
+            {
+                playerHealthSprite[i].gameObject.SetActive(false);
+            }
+        }
+
     }
 
     private void Update()
@@ -252,27 +306,12 @@ public class VSController : MonoBehaviour
         {
             if (isStart)
             {
-                //游戏开始
-                TweenPosition userTweenPos = userCardCollection.AddComponent<TweenPosition>();
-                userTweenPos.to = userCardCollectionOriPos;
-                userTweenPos.from = userCardCollectionTargetPos;
-
-                userTweenPos.onFinished.Add(new EventDelegate(() => {
+                AddTweenPostionEffect(userCardCollection, userCardCollectionOriPos, userCardCollectionTargetPos, 1, () => {
                     //第一次调用卡牌出现时才开启回合
-                    if (isFirst)
-                    {
-                        StartRound();
+                    GameStart();
+                });
 
-                        isFirst = false;
-                    }
-                    Destroy(userTweenPos);
-                }));
-
-                TweenPosition aiTweenPos = aiCardCollection.AddComponent<TweenPosition>();
-                aiTweenPos.to = aiCardCollectionOriPos;
-                aiTweenPos.from = aiCardCollectionTargetPos;
-
-                aiTweenPos.onFinished.Add(new EventDelegate(() => {Destroy(aiTweenPos); }));
+                AddTweenPostionEffect(aiCardCollection, aiCardCollectionOriPos, aiCardCollectionTargetPos, 1);
 
 
                 Time.timeScale = 1;
@@ -283,25 +322,37 @@ public class VSController : MonoBehaviour
             {
                 //游戏暂停
                 //游戏开始
-                TweenPosition userTweenPos = userCardCollection.AddComponent<TweenPosition>();
-                userTweenPos.from = userCardCollectionOriPos;
-                userTweenPos.to = userCardCollectionTargetPos;
+                AddTweenPostionEffect(userCardCollection, userCardCollectionOriPos, userCardCollectionTargetPos,1);
 
-                userTweenPos.onFinished.Add(new EventDelegate(() => { Destroy(userTweenPos); }));
-
-                TweenPosition aiTweenPos = aiCardCollection.AddComponent<TweenPosition>();
-                aiTweenPos.from = aiCardCollectionOriPos;
-                aiTweenPos.to = aiCardCollectionTargetPos;
-
-                aiTweenPos.onFinished.Add(new EventDelegate(() => { Destroy(aiTweenPos); }));
+                AddTweenPostionEffect(aiCardCollection, aiCardCollectionOriPos, aiCardCollectionTargetPos, 1);
 
                 Time.timeScale = 0;
 
                 isStart = true;
             }
         }
+    }
 
+    /// <summary>
+    /// 游戏开始
+    /// </summary>
+    private void GameStart()
+    {
+        if (isFirst)
+        {
+            //AI玩家的血量扣完之后的监听
+            aiPlayer.AddDiedActionListener(()=> { 
+            
+            });
+            //用户玩家的血量被扣完后的监听
+            userPlayer.AddDiedActionListener(() => {
 
+            });
+
+            StartRound();
+
+            isFirst = false;
+        }
     }
 
     /// <summary>
@@ -317,33 +368,13 @@ public class VSController : MonoBehaviour
         {
             if (UICamera.isOverUI)
             {
+                if (UICamera.hoveredObject == null) return;
                 if (UICamera.hoveredObject.name.Contains("Card_"))
                 {
                     //按下出牌
                     if (Input.GetMouseButtonDown(0))
                     {
-                        CardEntity cardEntity = null;
-
-                        int index = System.Convert.ToInt32(UICamera.hoveredObject.name.Substring(5, 1));
-
-                        if (playerRoundCardDic.ContainsKey(index))
-                        {
-                            cardEntity = playerRoundCardDic[index].Dequeue();
-                        }
-                        //获得当前点击卡牌的实体
-
-                        Debug.Log("1目前手牌长度为：" + playerRoundCardList.Count);
-
-                        RemoveUserCardEntity(cardEntity);
-
-                        Debug.Log("2目前手牌长度为："+playerRoundCardList.Count);
-
-                        //设置玩家出牌
-                        userPlayer.SetCurrtenCard(cardEntity);
-
-                        currtenCard = Instantiate<GameObject>(tempUsedCard, UICamera.hoveredObject.transform.position, Quaternion.identity, transform);
-
-                        currtenCard.GetComponent<UISprite>().spriteName = "Card_" + cardEntity.id;
+                        PlayerPlayCard();
 
                         RefashSceneCardData();
                     }
@@ -351,21 +382,17 @@ public class VSController : MonoBehaviour
                     //按下不松手跟随鼠标移动
                     if (Input.GetMouseButton(0))
                     {
-                        currtenCard.transform.position = GameObject.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
+                        PlayerPlayCard();
+
+                        currtenPlayerCard.transform.position = GameObject.Find("Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
                     }
 
                     //鼠标抬起牌打出卡牌
                     if (Input.GetMouseButtonUp(0))
                     {
-                        TweenPosition cardTweenPostion = currtenCard.GetComponent<TweenPosition>();
+                        PlayerPlayCard();
 
-                        cardTweenPostion.from = currtenCard.transform.localPosition;
-                        cardTweenPostion.to = targetPos;
-
-                        cardTweenPostion.enabled = true;
-
-                        cardTweenPostion.onFinished.Add(new EventDelegate(() => { /*cardTweenPostion.gameObject.SetActive(false);*/ }));
-
+                        AddTweenPostionEffect(currtenPlayerCard, playerTargetPos, 0.5f);
                         //回合结束，避免出第二次牌
                         isOnRound = false;
                     }
@@ -375,20 +402,128 @@ public class VSController : MonoBehaviour
     }
 
     /// <summary>
+    /// 真正的出牌逻辑
+    /// </summary>
+    private void PlayerPlayCard()
+    {
+        if (userPlayer.isAttacked) return;
+
+        CardEntity cardEntity = null;
+
+        int index = Convert.ToInt32(UICamera.hoveredObject.name.Substring(5, 1));
+
+        if (playerRoundCardDic.ContainsKey(index))
+        {
+            cardEntity = playerRoundCardDic[index].Dequeue();
+        }
+        //获得当前点击卡牌的实体
+        RemoveUserCardEntity(cardEntity);
+
+        //设置玩家出牌
+        userPlayer.SetCurrtenCard(cardEntity);
+
+        currtenPlayerCard = Instantiate<GameObject>(playerTempUsedCard, UICamera.hoveredObject.transform.position, Quaternion.identity, transform);
+
+        currtenPlayerCard.GetComponent<UISprite>().spriteName = "Card_" + cardEntity.id;
+
+    }
+
+    /// <summary>
+    /// 动态给UI实现动画效果
+    /// </summary>
+    /// <param name="tweenObj"></param>
+    /// <param name="targetPos"></param>
+    /// <param name="duringTime"></param>
+    /// <param name="action"></param>
+    private void AddTweenPostionEffect(GameObject tweenObj,Vector3 targetPos,float duringTime, Action action=null)
+    {
+        TweenPosition cardTweenPostion = tweenObj.AddComponent<TweenPosition>();
+
+        cardTweenPostion.from = tweenObj.transform.localPosition;
+        cardTweenPostion.to = targetPos;
+        cardTweenPostion.duration = duringTime;
+
+        cardTweenPostion.onFinished.Add(new EventDelegate(() => {
+            if (action!=null)
+            {
+                action();
+            }
+
+            Destroy(cardTweenPostion);
+        }));
+
+    }
+    private void AddTweenPostionEffect(GameObject tweenObj,Vector3 oriPos, Vector3 targetPos, float duringTime, Action action = null)
+    {
+        TweenPosition cardTweenPostion = tweenObj.AddComponent<TweenPosition>();
+
+        cardTweenPostion.from = oriPos;
+        cardTweenPostion.to = targetPos;
+        cardTweenPostion.duration = duringTime;
+
+        cardTweenPostion.onFinished.Add(new EventDelegate(() => {
+            if (action != null)
+            {
+                action();
+            }
+
+            Destroy(cardTweenPostion);
+        }));
+
+    }
+
+    /// <summary>
     /// 开启一个回合
     /// </summary>
     public void StartRound()
     {
         isOnRound = true;
 
+        //设置玩家角色每次的初始化
+        aiPlayer.StartRound();
+        userPlayer.StartRound();
+
+        aiAttackTime = UnityEngine.Random.Range(0f, 3f);
+
         //调用开启一个回合
         BattleManager.GetInstance().StartRound(FirstDectectCard, SecondDectectCard, OverTime, (value) => {
+            //当传递出来的数据小于0就不用再更新了
+            if (value < 0) return;
+            //回合实时更新，传递进来数据为三秒倒计时
             countDownLable.text = value.ToString("#0.00") + "s";
-            countDownLable.color = timeColor[0];
+            countDownLable.SetColorNoAlpha(timeColor[0]);
 
-            //设置玩家角色每次的初始化
-            aiPlayer.StartRound();
-            userPlayer.StartRound();
+            //AI出牌逻辑
+            if (!aiPlayer.isAttacked)
+            {
+                if (value <= aiAttackTime)
+                {
+                    CardEntity cardEntity = aiRoundCardList[UnityEngine.Random.Range(0,aiRoundCardList.Count)];
+                    RemoveAICardEntity(cardEntity);
+                    //出牌
+                    aiPlayer.SetCurrtenCard(cardEntity);
+
+                    GameObject tempGObj=null;
+                    for (int i = 0; i < aiCardSprite.Length; i++)
+                    {
+                        if (aiCardSprite[i].gameObject.name.Substring(7,1)== cardEntity.id.ToString())
+                        {
+                            tempGObj = aiCardSprite[i].gameObject;
+                        }
+                    }
+
+                    currtenAiCard= Instantiate<GameObject>(aiTempUsedCard, tempGObj.transform.position, Quaternion.identity, transform);
+                    RefashSceneCardData();
+
+                    AddTweenPostionEffect(currtenAiCard, aiTargetPos,0.5f,()=> {
+                        currtenAiCard.GetComponent<UISprite>().spriteName = "Card_" + cardEntity.id;
+                    });
+
+                    TweenScale aiTweenScale = currtenAiCard.AddComponent<TweenScale>();
+                    aiTweenScale.to = new Vector3(0.6f,0.6f,0.6f);
+                    aiTweenScale.duration = 0.5f;
+                }
+            }
         });
     }
 
@@ -397,8 +532,9 @@ public class VSController : MonoBehaviour
     /// </summary>
     private void FirstDectectCard()
     {
+        Debug.Log("第一个回合的监测");
         //更换字体颜色
-        countDownLable.color = timeColor[1];
+        countDownLable.SetColorNoAlpha(timeColor[1]);
     }
 
     /// <summary>
@@ -407,25 +543,34 @@ public class VSController : MonoBehaviour
     private void SecondDectectCard()
     {
         //开始检测哪一方未出牌
-        countDownLable.color = timeColor[2];
+        countDownLable.SetColorNoAlpha(timeColor[2]);
 
         //两方都在两秒之内出牌了
         if (userPlayer.isAttacked && aiPlayer.isAttacked) return;
 
-        if (!userPlayer.isAttacked&&!aiPlayer.isAttacked)
+        if (userPlayer.isAttacked && aiPlayer.isAttacked)
+        {
+            //两方都出牌了
+            aiPlayer.isCardUseful = true;
+            userPlayer.isCardUseful = true;
+        }
+        else if (!userPlayer.isAttacked&&!aiPlayer.isAttacked)
         {
             //两方都没出牌
-
+            aiPlayer.isCardUseful = true;
+            userPlayer.isCardUseful = true;
         }
         else if(userPlayer.isAttacked && !aiPlayer.isAttacked)
         {
             //玩家出牌了
-
+            aiPlayer.isCardUseful = false;
+            userPlayer.isCardUseful = true;
         }
         else if (!userPlayer.isAttacked && aiPlayer.isAttacked)
         {
-            //AI没有出牌
-
+            //AI出牌了
+            aiPlayer.isCardUseful = true;
+            userPlayer.isCardUseful = false;
         }
     }
 
@@ -436,22 +581,49 @@ public class VSController : MonoBehaviour
     {
         isOnRound = false;
 
-        if (currtenCard == null) return;
+        if (currtenPlayerCard == null) return;
 
         //强制松牌
-        TweenPosition cardTweenPostion = currtenCard.GetComponent<TweenPosition>();
+        AddTweenPostionEffect(currtenPlayerCard, playerTargetPos,0.5f);
 
-        cardTweenPostion.enabled = true;
+        //最终结算发起进攻
+        aiPlayer.Attack(userPlayer);
+        userPlayer.Attack(aiPlayer);
 
-        cardTweenPostion.from = currtenCard.transform.localPosition;
-        cardTweenPostion.to = targetPos;
+        RefashUIValue();
 
-        cardTweenPostion.onFinished.Add(new EventDelegate(() => {
-            //卡牌归位后的回调函数
-            /*cardTweenPostion.gameObject.SetActive(false);*/ 
-        }));
+        countDownLable.text = "End";
 
+        StartCoroutine(DelayToStartRound());
     }
 
-    
+    private IEnumerator DelayToStartRound()
+    {
+        yield return new WaitForSeconds(1);
+       
+        Destroy(currtenAiCard);
+        Destroy(currtenPlayerCard);
+
+        //保证当前还有手牌
+        if (aiRoundCardList.Count>0&&playerRoundCardList.Count>0)
+        {
+            StartRound();
+        }
+        else if(aiRoundCardList.Count<=0 && playerRoundCardList.Count <= 0)
+        {
+            //玩家和AI的手牌都打光了
+            //分别补充AI和玩家的卡牌
+        }
+        else if (aiRoundCardList.Count >= 0 && playerRoundCardList.Count <= 0)
+        {
+            //玩家的手牌打光了
+            //补充玩家的卡牌
+        }
+        else if(aiRoundCardList.Count <= 0 && playerRoundCardList.Count >= 0)
+        {
+            //AI的手牌打光了
+            //补充AI的卡牌
+        }
+    }
+
 }

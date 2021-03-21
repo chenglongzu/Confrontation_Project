@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class PlayerBase : MonoBehaviour
 {
-    public int lifeValue;
+    public int lifeValue { get; protected set; }
 
     public bool isAttacked { get; protected set; }     //是否选择了卡牌
 
-    public bool isCardUsed;     //当前卡牌是否有用
+    public bool isCardUseful;     //当前卡牌是否有用
 
     public CardEntity currtenCard;
+
+    //血量扣光执行的委托
+    public Action DiedAction;
+
+    public void AddDiedActionListener(Action action)
+    {
+        this.DiedAction += action;
+    }
 
     /// <summary>
     /// 开始一个新的回合，重置是否出牌占位符
@@ -80,7 +88,7 @@ public class PlayerBase : MonoBehaviour
     public void BeAttacked(CardEntity emeryCard, PlayerBase enemy, Action callBack=null)
     {
         //我方卡牌是否生效
-        if (isCardUsed)
+        if (isCardUseful)
         {
             //我方卡牌和对方卡牌可能产生的一系列反应
             switch (currtenCard.id)
@@ -177,6 +185,31 @@ public class PlayerBase : MonoBehaviour
     /// <param name="hurtValue"></param>
     public void ExtraHurtValue(int hurtValue)
     {
-        this.lifeValue -= hurtValue;
+        CutLifeValue(hurtValue);
     }
+
+    /// <summary>
+    /// 消减生命值
+    /// </summary>
+    /// <param name="value"></param>
+    public void CutLifeValue(int value)
+    {
+        this.lifeValue -= value;
+
+        if (lifeValue<=0)
+        {
+            //游戏结束调用委托方法
+            DiedAction();
+        }
+    }
+
+    /// <summary>
+    /// 设置生命值
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetLifeValue(int value)
+    {
+        this.lifeValue = value;
+    }
+
 }
