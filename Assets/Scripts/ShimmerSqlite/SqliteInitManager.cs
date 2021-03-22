@@ -32,6 +32,7 @@ public class SqliteInitManager : SingletonMono<SqliteInitManager>
                 {
                     for (int j = 1; j < 5; j++)
                     {
+                        //玩家默认拥有4张卡牌，向数据库中添加
                         SqlManager.GetInstance().Insert(tableName[i], DataManager.GetInstance().GetCardEntityById(j));
                     }
                 }
@@ -40,6 +41,26 @@ public class SqliteInitManager : SingletonMono<SqliteInitManager>
             SqlManager.GetInstance().PrintValueInDataBase(tableName[i]);
         }
 
+        RefashOwnCards();
+    }
+
+    public void RefashOwnCards()
+    {
+        //当当前关卡大于4时
+        int levelIndex = PlayerPrefs.GetInt("LevelIndex", 1);
+
+        if (levelIndex >= 6)
+        {
+            SqlManager.GetInstance().DeleTableAllData("OwnCard");
+
+            for (int i = 1; i < levelIndex; i++)
+            {
+                if (i <= 8)
+                {
+                    SqlManager.GetInstance().Insert("OwnCard", DataManager.GetInstance().GetCardEntityById(i));
+                }
+            }
+        }
     }
 
     public bool CheackExitData(string tableName,int id)

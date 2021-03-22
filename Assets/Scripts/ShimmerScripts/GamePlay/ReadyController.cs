@@ -37,7 +37,6 @@ public class ReadyController : MonoBehaviour
             {
                 if (UICamera.hoveredObject.name.Contains("Card_"))
                 {
-                    Debug.Log("oooooooooooooooooooooooooooooo");
                     ShowShowSprite(DataManager.GetInstance().GetCardEntityById(Convert.ToInt32(UICamera.hoveredObject.name.Substring(5, 1))));
                 }
 
@@ -48,15 +47,6 @@ public class ReadyController : MonoBehaviour
 
             }
         }
-
-        //if (showPanel.active)
-        //{
-        //    if (Input.GetMouseButtonDown(1))
-        //    {
-        //        showPanel.SetActive(false);
-        //    }
-        //}
-
     }
 
     /// <summary>
@@ -106,6 +96,7 @@ public class ReadyController : MonoBehaviour
         {
             int cardIndex = int.Parse(cardButtons[i].gameObject.name.Substring(5, 1));
 
+            //如果当前存在这个卡则显示
             if (!SqliteInitManager.GetInstance().CheackExitData("OwnCard", cardIndex))
             {
                 cardButtons[i].gameObject.SetActive(false);

@@ -48,6 +48,7 @@ public class PlayerBase : MonoBehaviour
     /// <param name="index">当前卡片的序号</param>
     public void Attack(PlayerBase enemy)
     {
+        if (currtenCard == null) return;
         enemy.BeAttacked(currtenCard, this);
 
         switch (currtenCard.id)
@@ -93,7 +94,7 @@ public class PlayerBase : MonoBehaviour
     public void BeAttacked(CardEntity emeryCard, PlayerBase enemy, Action callBack=null)
     {
         //我方卡牌是否生效
-        if (isCardUseful)
+        if (isCardUseful&& currtenCard!=null)
         {
             //我方卡牌和对方卡牌可能产生的一系列反应
             switch (currtenCard.id)
@@ -185,6 +186,8 @@ public class PlayerBase : MonoBehaviour
             default:
                 break;
         }
+
+        currtenCard = null;
 
     }
 

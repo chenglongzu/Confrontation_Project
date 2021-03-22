@@ -11,21 +11,14 @@ public class BattleManager : SingletonMono<BattleManager>
     private List<CardEntity> playerCardsList;
     private Dictionary<int, Queue<CardEntity>> playerCradsDic;
 
-    //玩家手牌资源
-    private List<CardEntity> playerRoundCardList;
-    private Dictionary<int, Queue<CardEntity>> playerRoundCardDic;
-
     //AI牌库资源
     private List<CardEntity> aiCardList;
     private Dictionary<int, Queue<CardEntity>> aiCardDic;
 
-    //AI手牌资源
-    private List<CardEntity> aiRoundCardList;
-    private Dictionary<int, Queue<CardEntity>> aiRoundCardDic;
 
     //玩家和AI
-    public PlayerBase userPlayer;
-    public PlayerBase aiPlayer;
+    private PlayerBase userPlayer;
+    private PlayerBase aiPlayer;
 
     protected override void Awake()
     {
@@ -37,11 +30,6 @@ public class BattleManager : SingletonMono<BattleManager>
         aiCardList = new List<CardEntity>();
         aiCardDic = new Dictionary<int, Queue<CardEntity>>();
 
-        playerRoundCardList = new List<CardEntity>();
-        playerRoundCardDic = new Dictionary<int, Queue<CardEntity>>();
-
-        aiRoundCardList = new List<CardEntity>();
-        aiRoundCardDic = new Dictionary<int, Queue<CardEntity>>();
     }
 
     #region CardToBattle战斗
@@ -110,150 +98,7 @@ public class BattleManager : SingletonMono<BattleManager>
 
     #endregion
 
-    #region GetRoundCard 手牌
-    /// <summary>
-    /// 玩家获取随机手牌并存储起来 游戏开始
-    /// </summary>
-    public bool PlayRandomGetCardToBattle(int value)
-    {
-        if (value > playerCardsList.Count) return false;
-
-        List<CardEntity> tempList = GetDataFromList(value, playerCardsList, playerCradsDic);
-        for (int i = 0; i < tempList.Count; i++)
-        {
-            playerRoundCardList.Add(tempList[i]);
-        }
-
-        for (int i = 0; i < playerRoundCardList.Count; i++)
-        {
-            if (playerRoundCardDic.ContainsKey(playerRoundCardList[i].id))
-            {
-                playerRoundCardDic[playerRoundCardList[i].id].Enqueue(playerRoundCardList[i]);
-            } else
-            {
-                playerRoundCardDic.Add(playerRoundCardList[i].id, new Queue<CardEntity>());
-                playerRoundCardDic[playerRoundCardList[i].id].Enqueue(playerRoundCardList[i]);
-            }
-
-            Debug.Log(string.Format("玩家手牌分别为：id：{0}，name：{1}", playerRoundCardList[i].id, playerRoundCardList[i].name));
-        }
-
-        userPlayer = new PlayerBase();
-
-        return true;
-    }
-
-    /// <summary>
-    /// AI获取随机手牌并存储起来 游戏开始
-    /// </summary>
-    public bool AiRandomGetCardToBattle(int value)
-    {
-        if (value > aiCardList.Count) return false;
-
-        List<CardEntity> tempList = GetDataFromList(value, aiCardList, aiCardDic);
-        for (int i = 0; i < tempList.Count; i++)
-        {
-            aiRoundCardList.Add(tempList[i]);
-        }
-
-        for (int i = 0; i < aiRoundCardList.Count; i++)
-        {
-            if (aiRoundCardDic.ContainsKey(aiRoundCardList[i].id))
-            {
-                aiRoundCardDic[aiRoundCardList[i].id].Enqueue(aiRoundCardList[i]);
-            }
-            else
-            {
-                aiRoundCardDic.Add(aiRoundCardList[i].id, new Queue<CardEntity>());
-                aiRoundCardDic[aiRoundCardList[i].id].Enqueue(aiRoundCardList[i]);
-            }
-
-            Debug.Log(string.Format("AI手牌分别为：id：{0}，name：{1}", aiRoundCardList[i].id, aiRoundCardList[i].name));
-        }
-
-        aiPlayer = new PlayerBase();
-
-        return true;
-    }
-
-
-    public List<CardEntity> GetDataFromList(int value, List<CardEntity> cardsList, Dictionary<int, Queue<CardEntity>> cardsDic)
-    {
-        Debug.Log(string.Format("List长度：{0}，Dic长度：{1}", cardsList.Count, cardsDic.Count));
-
-        List<CardEntity> tempPlayerCardList = GetRandomList(cardsList);
-
-        List<CardEntity> returnPlayerCardList = new List<CardEntity>();
-
-        for (int i = 0; i < value; i++)
-        {
-            CardEntity tempCardEntity = tempPlayerCardList[0];
-
-            tempPlayerCardList.RemoveAt(0);
-
-            if (cardsDic.ContainsKey(tempCardEntity.id))
-            {
-                cardsDic[tempCardEntity.id].Dequeue();
-            }
-
-            returnPlayerCardList.Add(tempCardEntity);
-        }
-
-        Debug.Log("当前牌库数量List：" + tempPlayerCardList.Count);
-        return returnPlayerCardList;
-    }
-
-    /// <summary>
-    /// 将传递进来的List顺序打乱
-    /// </summary>
-    /// <param name="playerCards"></param>
-    /// <returns></returns>
-    private List<CardEntity> GetRandomList(List<CardEntity> cardsList)
-    {
-        List<CardEntity> newPlayerCardList = cardsList;
-
-        for (int i = 0; i < newPlayerCardList.Count; i++)
-        {
-            int ran = UnityEngine.Random.Range(0, newPlayerCardList.Count);
-
-            CardEntity temp;
-
-            temp = newPlayerCardList[i];
-            newPlayerCardList[i] = cardsList[ran];
-            newPlayerCardList[ran] = temp;
-        }
-
-        return newPlayerCardList;
-    }
-
-    /// <summary>
-    /// 获取AI的回合卡牌
-    /// </summary>
-    public List<CardEntity> GetAiRoundCardList()
-    {
-        return aiRoundCardList;
-    }
-    public Dictionary<int, Queue<CardEntity>> GetAiRoundCardDic()
-    {
-        return aiRoundCardDic;
-    }
-
-    /// <summary>
-    /// 获取玩家的回合卡牌
-    /// </summary>
-    public List<CardEntity> GetPlayerRoundCardList()
-    {
-        return playerRoundCardList;
-    }
-    public Dictionary<int,Queue<CardEntity>> GetPlayerRoundCardDic()
-    {
-        return playerRoundCardDic;
-    }
-
-    #endregion
-
     #region CardReadyToBattle 牌库
-
     #region AI
     /// <summary>
     /// 向AI牌库添加卡片
@@ -283,6 +128,21 @@ public class BattleManager : SingletonMono<BattleManager>
         {
             Debug.Log(string.Format("AI牌库资源id：{0} name：{1}", aiCardList[i].id, aiCardList[i].name));
         }
+    }
+
+    /// <summary>
+    /// 克隆AI牌库资源
+    /// </summary>
+    /// <returns></returns>
+    public List<CardEntity> CloneAICard()
+    {
+        List<CardEntity> aiCloneList = new List<CardEntity>();
+        for (int i = 0; i < aiCardList.Count; i++)
+        {
+            aiCloneList.Add(aiCardList[i]);
+        }
+
+        return aiCloneList;
     }
     #endregion
 
@@ -461,6 +321,20 @@ public class BattleManager : SingletonMono<BattleManager>
         playerCradsDic.Clear();
     }
 
+    /// <summary>
+    /// 克隆Player牌库资源
+    /// </summary>
+    /// <returns></returns>
+    public List<CardEntity> ClonePlayerCard()
+    {
+        List<CardEntity> playerCloneList = new List<CardEntity>();
+        for (int i = 0; i < playerCardsList.Count; i++)
+        {
+            playerCloneList.Add(playerCardsList[i]);
+        }
+
+        return playerCloneList;
+    }
     #endregion
     #endregion
 

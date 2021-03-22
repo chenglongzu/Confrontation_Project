@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ShimmerFramework;
 
 public class VSController : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class VSController : MonoBehaviour
     //倒计时的Lable索引
     private UILabel countDownLable;
 
+    private UILabel levelIndexLable;
+
     //玩家和AI的生命值图标索引
     private UISprite[] playerHealthSprite;
     private UISprite[] aiHealthSprite;
@@ -56,12 +59,22 @@ public class VSController : MonoBehaviour
     #endregion
 
     #region 实体类数据结构
-    //玩家和AI的手牌实体类List
+    //玩家牌库资源
+    private List<CardEntity> playerCardsList;
+    private Dictionary<int, Queue<CardEntity>> playerCardsDic;
+
+    //AI牌库资源
+    private List<CardEntity> aiCardList;
+    private Dictionary<int, Queue<CardEntity>> aiCardDic;
+
+    //玩家手牌资源
     private List<CardEntity> playerRoundCardList;
     private Dictionary<int, Queue<CardEntity>> playerRoundCardDic;
 
+    //AI手牌资源
     private List<CardEntity> aiRoundCardList;
     private Dictionary<int, Queue<CardEntity>> aiRoundCardDic;
+
     #endregion
 
     #region 游戏占位符
@@ -109,9 +122,6 @@ public class VSController : MonoBehaviour
     /// </summary>
     private void InitPlayerValue()
     {
-        aiPlayer = BattleManager.GetInstance().aiPlayer;
-        userPlayer = BattleManager.GetInstance().userPlayer;
-
         aiLife = DataManager.GetInstance().maxLifeValue;
         userLife = DataManager.GetInstance().maxLifeValue;
     }
@@ -121,12 +131,41 @@ public class VSController : MonoBehaviour
     /// </summary>
     private void InitCardData()
     {
-        //添加AI卡片到牌库
-        BattleManager.GetInstance().AddAICardToBattle();
+        //初始化当前回合的牌库，不影响本来的牌库
+        playerCardsList = BattleManager.GetInstance().ClonePlayerCard();
+        aiCardList = BattleManager.GetInstance().CloneAICard();
+
+        playerCardsDic = new Dictionary<int, Queue<CardEntity>>();
+        aiCardDic = new Dictionary<int, Queue<CardEntity>>();
+
+        for (int i = 0; i < playerCardsList.Count; i++)
+        {
+            if (!playerCardsDic.ContainsKey(playerCardsList[i].id))
+            {
+                playerCardsDic.Add(playerCardsList[i].id,new Queue<CardEntity>());
+            }
+            playerCardsDic[playerCardsList[i].id].Enqueue(playerCardsList[i]);
+        }
+
+        for (int i = 0; i < aiCardList.Count; i++)
+        {
+            if (!aiCardDic.ContainsKey(aiCardList[i].id))
+            {
+                aiCardDic.Add(aiCardList[i].id, new Queue<CardEntity>());
+            }
+            aiCardDic[aiCardList[i].id].Enqueue(aiCardList[i]);
+        }
+
+
+        playerRoundCardList = new List<CardEntity>();
+        playerRoundCardDic = new Dictionary<int, Queue<CardEntity>>();
+
+        aiRoundCardList = new List<CardEntity>();
+        aiRoundCardDic = new Dictionary<int, Queue<CardEntity>>();
 
         //获取牌库中随机的五张卡牌
-        BattleManager.GetInstance().PlayRandomGetCardToBattle(5);
-        BattleManager.GetInstance().AiRandomGetCardToBattle(5);
+        PlayRandomGetCardToBattle(5);
+        AiRandomGetCardToBattle(5);
     }
 
     /// <summary>
@@ -136,6 +175,8 @@ public class VSController : MonoBehaviour
     {
         //倒计时的Lable
         countDownLable = transform.Find("CountDown").GetComponent<UILabel>();
+
+        levelIndexLable = transform.Find("LevelIndex").GetComponent<UILabel>();
 
         //玩家和AI卡牌动画脚本
         userCardCollection = transform.Find("CardCollection/UserCardCollection").gameObject;
@@ -159,38 +200,21 @@ public class VSController : MonoBehaviour
     /// </summary>
     private void InitSceneData()
     {        
-        //从BattleManager单例中获取玩家和AI的手牌
-        playerRoundCardList = BattleManager.GetInstance().GetPlayerRoundCardList();
-        aiRoundCardList = BattleManager.GetInstance().GetAiRoundCardList();
-
-        playerRoundCardDic = BattleManager.GetInstance().GetPlayerRoundCardDic();
-        aiRoundCardDic = BattleManager.GetInstance().GetAiRoundCardDic();
-
-        //for (int i = 0; i < playerRoundCardList.Count; i++)
-        //{
-        //    if (!playerRoundCardDic.ContainsKey(playerRoundCardList[i].id))
-        //    {
-        //        playerRoundCardDic.Add(playerRoundCardList[i].id, new Queue<CardEntity>() { });
-        //    }
-        //    playerRoundCardDic[playerRoundCardList[i].id].Enqueue(playerRoundCardList[i]);
-        //}
-
-
-        //for (int i = 0; i < aiRoundCardList.Count; i++)
-        //{
-        //    if (!aiRoundCardDic.ContainsKey(aiRoundCardList[i].id))
-        //    {
-        //        aiRoundCardDic.Add(aiRoundCardList[i].id, new Queue<CardEntity>() { });
-
-        //    }
-        //    aiRoundCardDic[aiRoundCardList[i].id].Enqueue(aiRoundCardList[i]);
-        //}
-
         RefashSceneCardData();
+
+        Debug.Log("aiPlayer:"+ aiPlayer);
+
+        aiPlayer = new PlayerBase();
+        userPlayer = new PlayerBase();
 
         //设置两个玩家的初始生命值
         aiPlayer.SetLifeValue(DataManager.GetInstance().maxLifeValue);
         userPlayer.SetLifeValue(DataManager.GetInstance().maxLifeValue);
+
+        //设置当前关卡的数值
+        levelIndexLable.text = "Level "+GameManager.GetInstance().CurrrtenLevel.ToString();
+
+        transform.Find("OverPanel").gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -221,6 +245,17 @@ public class VSController : MonoBehaviour
             playerRoundCardList.Remove(cardEntity);
         }else
         {
+            for (int i = 0; i < playerRoundCardList.Count; i++)
+            {
+                if (playerRoundCardList[i].id==cardEntity.id)
+                {
+                    playerRoundCardList.Remove(cardEntity);
+                    RefashSceneCardData();
+                    Debug.LogError("没有初步获取数据");
+
+                    return;
+                }
+            }
             Debug.LogError("没有从数据结构中获取数据");
         }
     }
@@ -268,13 +303,15 @@ public class VSController : MonoBehaviour
     {
         RefashUIValue();
 
-        UIEventListener.Get(transform.Find("OverPanel/Restart").gameObject).onClick+=(value)=> {
-            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
-        };
+        //UIEventListener.Get(transform.Find("OverPanel/Restart").gameObject).onClick+=(value)=> {
+        //    Time.timeScale = 1;
+        //    SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+        //};
 
-        UIEventListener.Get(transform.Find("OverPanel/MainMeanu").gameObject).onClick += (value) => {
-            SceneManager.LoadSceneAsync("Start");
-        };
+        //UIEventListener.Get(transform.Find("OverPanel/MainMeanu").gameObject).onClick += (value) => {
+        //    Time.timeScale = 1;
+        //    SceneManager.LoadSceneAsync("Start");
+        //};
 
     }
 
@@ -283,8 +320,8 @@ public class VSController : MonoBehaviour
     /// </summary>
     private void RefashUIValue()
     {
-        transform.Find("BittleGround/PlayerCardGroup/Label").GetComponent<UILabel>().text = BattleManager.GetInstance().GetButtleCardLength().ToString();
-        transform.Find("BittleGround/AICardGroup/Label").GetComponent<UILabel>().text = BattleManager.GetInstance().GetAiButtleCardLength().ToString();
+        transform.Find("BittleGround/PlayerCardGroup/Label").GetComponent<UILabel>().text = playerCardsList.Count.ToString();
+        transform.Find("BittleGround/AICardGroup/Label").GetComponent<UILabel>().text = aiCardList.Count.ToString();
 
         //添加玩家和AI的生命值的体现
         Debug.Log(string.Format("这里看到的数据AI:{0},User:{1}:", aiLife, userLife));
@@ -379,7 +416,7 @@ public class VSController : MonoBehaviour
             },
             (value)=> {
                 //Ai添加手牌
-                if (!BattleManager.GetInstance().AiRandomGetCardToBattle(value))
+                if (!AiRandomGetCardToBattle(value))
                 {
                     //AI游戏失败
                     AiGameOver("AI牌库数量不足");
@@ -401,7 +438,7 @@ public class VSController : MonoBehaviour
             },
             (value)=> {
                 //玩家添加手牌
-                if (!BattleManager.GetInstance().PlayRandomGetCardToBattle(value))
+                if (!PlayRandomGetCardToBattle(value))
                 {
                     //玩家游戏失败
                     PlayerGameOver("玩家牌库数量不足");
@@ -685,11 +722,6 @@ public class VSController : MonoBehaviour
         isPlayerCardActive = true;
         isAiCardActive = true;
 
-        if (currtenPlayerCard == null) return;
-
-        //强制松牌
-        AddTweenPostionEffect(currtenPlayerCard, playerTargetPos,0.5f);
-
         //最终结算发起进攻
         aiPlayer.Attack(userPlayer);
         userPlayer.Attack(aiPlayer);
@@ -699,6 +731,12 @@ public class VSController : MonoBehaviour
         countDownLable.text = "End";
 
         StartCoroutine(DelayToStartRound());
+
+        if (currtenPlayerCard == null) return;
+
+        //强制松牌
+        AddTweenPostionEffect(currtenPlayerCard, playerTargetPos, 0.5f);
+
     }
 
     /// <summary>
@@ -728,7 +766,7 @@ public class VSController : MonoBehaviour
                 {
                     if (!isPlayerSuppled)
                     {
-                        if (!BattleManager.GetInstance().PlayRandomGetCardToBattle(2))
+                        if (!PlayRandomGetCardToBattle(2))
                         {
                             //玩家牌库不足 判断玩家失败
                             PlayerGameOver("玩家牌库不足");
@@ -741,7 +779,7 @@ public class VSController : MonoBehaviour
 
                     if (!isAiSuppled)
                     {
-                        if (!BattleManager.GetInstance().AiRandomGetCardToBattle(2))
+                        if (!AiRandomGetCardToBattle(2))
                         {
                             //AI牌库不足 判断AI失败
                             AiGameOver("AI牌库不足");
@@ -765,7 +803,7 @@ public class VSController : MonoBehaviour
                 {
                     if (!isPlayerSuppled)
                     {
-                        if (!BattleManager.GetInstance().PlayRandomGetCardToBattle(2))
+                        if (!PlayRandomGetCardToBattle(2))
                         {
                             //玩家牌库不足 判断玩家失败
                             PlayerGameOver("玩家牌库不足");
@@ -789,7 +827,7 @@ public class VSController : MonoBehaviour
                 {
                     if (!isAiSuppled)
                     {
-                        if (!BattleManager.GetInstance().AiRandomGetCardToBattle(2))
+                        if (!AiRandomGetCardToBattle(2))
                         {
                             //AI牌库不足 判断AI失败
                             AiGameOver("AI牌库不足");
@@ -840,7 +878,7 @@ public class VSController : MonoBehaviour
     private void AiGameOver(string Reason)
     {
         Debug.Log("游戏胜利"+ Reason);
-        SetOverPanelIndex(2);
+        SetOverPanelIndex(1, Reason);
     }
 
     /// <summary>
@@ -849,7 +887,7 @@ public class VSController : MonoBehaviour
     private void PlayerGameOver(string Reason)
     {
         Debug.Log("游戏结束"+ Reason);
-        SetOverPanelIndex(0);
+        SetOverPanelIndex(0, Reason);
     }
 
     /// <summary>
@@ -858,35 +896,235 @@ public class VSController : MonoBehaviour
     private void DrawGame(string Reason)
     {
         Debug.Log("平局"+ Reason);
-        SetOverPanelIndex(3);
+        SetOverPanelIndex(2, Reason);
     }
 
-    private void SetOverPanelIndex(int index)
+    /// <summary>
+    /// 设置游戏结束的界面
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="info"></param>
+    private void SetOverPanelIndex(int index,string info)
     {
+        StartCoroutine(DelayToSetOver(index,info));
+    }
+
+    private IEnumerator DelayToSetOver(int index, string info)
+    {
+        yield return new WaitForSeconds(1);
+
+        //获取当前关卡的序号
+        int levelIndex = GameManager.GetInstance().CurrrtenLevel;
+
+        if (index==1)
+        {
+            levelIndex++;
+        }
+
         transform.Find("OverPanel").gameObject.SetActive(true);
+
+        transform.Find("OverPanel/Info").GetComponent<UILabel>().text = info;
+
+        if (levelIndex < 5)
+        {
+            UILabel countDownLable = transform.Find("OverPanel/CountDownLabel").GetComponent<UILabel>();
+
+            transform.Find("OverPanel/Option").gameObject.SetActive(false);
+
+            CountDown(3f,
+                (value) => {
+                    countDownLable.text = value.ToString("#0");
+                },
+            () => {
+                SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+            });
+        }
+        else
+        {
+            if (index>=10)
+            {
+                transform.Find("OverPanel/Option/Option").gameObject.SetActive(false);
+            }
+
+            //选项面板激活 倒计时面板取消激活
+            transform.Find("OverPanel/Option").gameObject.SetActive(true);
+            transform.Find("OverPanel/CountDownLabel").gameObject.SetActive(false);
+            transform.Find("OverPanel/Next").gameObject.SetActive(false);
+
+            UIEventListener.Get(transform.Find("OverPanel/Option/Return").gameObject).onClick += (value) => {
+                SceneManager.LoadSceneAsync("Start");
+            };
+
+            UIEventListener.Get(transform.Find("OverPanel/Option/Option").gameObject).onClick+=(value)=>{
+                SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+            };
+        }
 
         switch (index)
         {
             case 0:
-                transform.Find("OverPanel/Defeated").gameObject.SetActive(true);
-                transform.Find("OverPanel/Win").gameObject.SetActive(false);
-                transform.Find("OverPanel/Draw").gameObject.SetActive(false);
+                //失败
+                transform.Find("OverPanel/Head").GetComponent<UILabel>().text = "失败";
+                transform.Find("OverPanel/Next").GetComponent<UILabel>().text = "再来本关";
+                transform.Find("OverPanel/Option/Option").GetComponent<UILabel>().text = "再来本关";
                 break;
             case 1:
-                transform.Find("OverPanel/Defeated").gameObject.SetActive(false);
-                transform.Find("OverPanel/Win").gameObject.SetActive(true);
-                transform.Find("OverPanel/Draw").gameObject.SetActive(false);
+                //成功
+                transform.Find("OverPanel/Head").GetComponent<UILabel>().text = "成功";
+                transform.Find("OverPanel/Next").GetComponent<UILabel>().text = "下一关";
+                transform.Find("OverPanel/Option/Option").GetComponent<UILabel>().text = "下一关";
+                GameManager.GetInstance().AddLevelIndex();
                 break;
             case 2:
-                transform.Find("OverPanel/Defeated").gameObject.SetActive(false);
-                transform.Find("OverPanel/Win").gameObject.SetActive(false);
-                transform.Find("OverPanel/Draw").gameObject.SetActive(true);
+                //平局
+                transform.Find("OverPanel/Head").GetComponent<UILabel>().text = "平局";
+                transform.Find("OverPanel/Next").GetComponent<UILabel>().text = "再来本关";
+                transform.Find("OverPanel/Option/Option").GetComponent<UILabel>().text = "再来本关";
                 break;
             default:
                 break;
         }
 
-        Time.timeScale = 0;
         isOver = true;
+
     }
+
+    private void CountDown(float time,Action<float> callback,Action over)
+    {
+        StartCoroutine(CountDownIEnumerator(time, callback, over));
+    }
+
+    private IEnumerator CountDownIEnumerator(float time, Action<float> callback, Action over)
+    {
+        while (time>0)
+        {
+            yield return null;
+            time -= Time.deltaTime;
+            callback(time);
+        }
+
+        over();
+    }
+
+    #region GetRoundCard 手牌
+    /// <summary>
+    /// 玩家获取随机手牌并存储起来 游戏开始
+    /// </summary>
+    public bool PlayRandomGetCardToBattle(int value)
+    {
+        if (value > playerCardsList.Count) return false;
+
+        List<CardEntity> tempList = GetDataFromList(value, playerCardsList, playerCardsDic);
+
+        for (int i = 0; i < tempList.Count; i++)
+        {
+            playerRoundCardList.Add(tempList[i]);
+        }
+
+        for (int i = 0; i < playerRoundCardList.Count; i++)
+        {
+            if (playerRoundCardDic.ContainsKey(playerRoundCardList[i].id))
+            {
+                playerRoundCardDic[playerRoundCardList[i].id].Enqueue(playerRoundCardList[i]);
+            }
+            else
+            {
+                playerRoundCardDic.Add(playerRoundCardList[i].id, new Queue<CardEntity>());
+                playerRoundCardDic[playerRoundCardList[i].id].Enqueue(playerRoundCardList[i]);
+            }
+
+            Debug.Log(string.Format("玩家手牌分别为：id：{0}，name：{1}", playerRoundCardList[i].id, playerRoundCardList[i].name));
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// AI获取随机手牌并存储起来 游戏开始
+    /// </summary>
+    public bool AiRandomGetCardToBattle(int value)
+    {
+        Debug.Log("AI牌库资源：" + aiCardList.Count);
+
+        if (value > aiCardList.Count) return false;
+
+        List<CardEntity> tempList = GetDataFromList(value, aiCardList, aiCardDic);
+        for (int i = 0; i < tempList.Count; i++)
+        {
+            aiRoundCardList.Add(tempList[i]);
+        }
+
+        for (int i = 0; i < aiRoundCardList.Count; i++)
+        {
+            if (aiRoundCardDic.ContainsKey(aiRoundCardList[i].id))
+            {
+                aiRoundCardDic[aiRoundCardList[i].id].Enqueue(aiRoundCardList[i]);
+            }
+            else
+            {
+                aiRoundCardDic.Add(aiRoundCardList[i].id, new Queue<CardEntity>());
+                aiRoundCardDic[aiRoundCardList[i].id].Enqueue(aiRoundCardList[i]);
+            }
+
+            Debug.Log(string.Format("AI手牌分别为：id：{0}，name：{1}", aiRoundCardList[i].id, aiRoundCardList[i].name));
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// 从数据结构中获取一系列数据
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="cardsList"></param>
+    /// <param name="cardsDic"></param>
+    /// <returns></returns>
+    public List<CardEntity> GetDataFromList(int value, List<CardEntity> cardsList, Dictionary<int, Queue<CardEntity>> cardsDic)
+    {
+        Debug.Log(string.Format("List长度：{0}，Dic长度：{1}", cardsList.Count, cardsDic.Count));
+
+        List<CardEntity> tempPlayerCardList = GetRandomList(cardsList);
+
+        List<CardEntity> returnPlayerCardList = new List<CardEntity>();
+
+        for (int i = 0; i < value; i++)
+        {
+            CardEntity tempCardEntity = tempPlayerCardList[0];
+
+            tempPlayerCardList.RemoveAt(0);
+
+            if (cardsDic.ContainsKey(tempCardEntity.id))
+            {
+                cardsDic[tempCardEntity.id].Dequeue();
+            }
+
+            returnPlayerCardList.Add(tempCardEntity);
+        }
+
+        Debug.Log("当前牌库数量List：" + tempPlayerCardList.Count);
+        return returnPlayerCardList;
+    }
+
+    /// <summary>
+    /// 将传递进来的List顺序打乱
+    /// </summary>
+    /// <param name="playerCards"></param>
+    /// <returns></returns>
+    private List<CardEntity> GetRandomList(List<CardEntity> cardsList)
+    {
+        List<CardEntity> newPlayerCardList = cardsList;
+
+        for (int i = 0; i < newPlayerCardList.Count; i++)
+        {
+            int ran = UnityEngine.Random.Range(0, newPlayerCardList.Count);
+
+            CardEntity temp;
+
+            temp = newPlayerCardList[i];
+            newPlayerCardList[i] = cardsList[ran];
+            newPlayerCardList[ran] = temp;
+        }
+
+        return newPlayerCardList;
+    }
+    #endregion
+
 }

@@ -241,11 +241,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 196999209}
-  - component: {fileID: 196999212}
   - component: {fileID: 196999211}
   - component: {fileID: 196999210}
+  - component: {fileID: 196999213}
   m_Layer: 5
-  m_Name: Level_6
+  m_Name: Level_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,7 +260,7 @@ Transform:
   m_GameObject: {fileID: 196999208}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -47, y: -188, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
   m_RootOrder: 7
@@ -304,7 +304,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &196999212
+--- !u!114 &196999213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 196999208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -335,14 +335,31 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
 --- !u!1 &283323951
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,6 +534,24 @@ MonoBehaviour:
   mSpriteName: 1
   mFixedAspect: 0
   mFillCenter: 1
+--- !u!1 &709262439 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5599587553979548771, guid: 64611baf63ffb22439af562d211a5707,
+    type: 3}
+  m_PrefabInstance: {fileID: 2005510678}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &709262440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709262439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500e360d3ac6b5349babed1cfa6602f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &801096984
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,11 +561,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 801096985}
-  - component: {fileID: 801096988}
   - component: {fileID: 801096987}
   - component: {fileID: 801096986}
+  - component: {fileID: 801096989}
   m_Layer: 5
-  m_Name: Level_4
+  m_Name: Level_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -545,7 +580,7 @@ Transform:
   m_GameObject: {fileID: 801096984}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -47, y: -78, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
   m_RootOrder: 5
@@ -589,7 +624,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &801096988
+--- !u!114 &801096989
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -598,7 +633,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 801096984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -620,14 +655,31 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
 --- !u!1 &908188102
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,11 +1027,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 981537182}
-  - component: {fileID: 981537185}
   - component: {fileID: 981537184}
   - component: {fileID: 981537183}
+  - component: {fileID: 981537186}
   m_Layer: 5
-  m_Name: Level_7
+  m_Name: Level_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -994,7 +1046,7 @@ Transform:
   m_GameObject: {fileID: 981537181}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 146, y: -96, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
   m_RootOrder: 8
@@ -1038,7 +1090,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &981537185
+--- !u!114 &981537186
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1047,7 +1099,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 981537181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -1069,14 +1121,31 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
 --- !u!1 &1049799247
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,11 +1155,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1049799248}
-  - component: {fileID: 1049799251}
   - component: {fileID: 1049799250}
   - component: {fileID: 1049799249}
+  - component: {fileID: 1049799252}
   m_Layer: 5
-  m_Name: Level_1
+  m_Name: Level_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1105,7 +1174,7 @@ Transform:
   m_GameObject: {fileID: 1049799247}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -74, y: 8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
   m_RootOrder: 2
@@ -1149,7 +1218,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1049799251
+--- !u!114 &1049799252
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1158,7 +1227,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1049799247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -1180,14 +1249,31 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
 --- !u!1 &1081480574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1197,11 +1283,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1081480575}
-  - component: {fileID: 1081480578}
   - component: {fileID: 1081480577}
   - component: {fileID: 1081480576}
+  - component: {fileID: 1081480579}
   m_Layer: 5
-  m_Name: Level_2
+  m_Name: Level_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1216,7 +1302,7 @@ Transform:
   m_GameObject: {fileID: 1081480574}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -87, y: 131, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
   m_RootOrder: 3
@@ -1260,7 +1346,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1081480578
+--- !u!114 &1081480579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1269,7 +1355,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1081480574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -1291,14 +1377,31 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
 --- !u!1 &1102549838
 GameObject:
   m_ObjectHideFlags: 0
@@ -2007,11 +2110,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1646461334}
-  - component: {fileID: 1646461337}
   - component: {fileID: 1646461336}
   - component: {fileID: 1646461335}
+  - component: {fileID: 1646461338}
   m_Layer: 5
-  m_Name: Level_3
+  m_Name: Level_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2026,7 +2129,7 @@ Transform:
   m_GameObject: {fileID: 1646461333}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 39, y: 13, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
   m_RootOrder: 4
@@ -2070,7 +2173,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1646461337
+--- !u!114 &1646461338
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2079,7 +2182,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1646461333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -2101,14 +2204,31 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
 --- !u!1 &1663084026
 GameObject:
   m_ObjectHideFlags: 0
@@ -2272,9 +2392,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1711271190}
-  - component: {fileID: 1711271193}
   - component: {fileID: 1711271192}
   - component: {fileID: 1711271191}
+  - component: {fileID: 1711271194}
   m_Layer: 5
   m_Name: Level_9
   m_TagString: Untagged
@@ -2291,10 +2411,10 @@ Transform:
   m_GameObject: {fileID: 1711271189}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 133, y: -201, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1711271191
 MonoBehaviour:
@@ -2335,7 +2455,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1711271193
+--- !u!114 &1711271194
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2344,7 +2464,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1711271189}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -2366,14 +2486,31 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
 --- !u!1 &1919192649
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,11 +2520,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1919192650}
-  - component: {fileID: 1919192653}
   - component: {fileID: 1919192652}
   - component: {fileID: 1919192651}
+  - component: {fileID: 1919192654}
   m_Layer: 5
-  m_Name: Level_8
+  m_Name: Level_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2402,10 +2539,10 @@ Transform:
   m_GameObject: {fileID: 1919192649}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 133, y: 201, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1919192651
 MonoBehaviour:
@@ -2446,7 +2583,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1919192653
+--- !u!114 &1919192654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2455,7 +2592,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1919192649}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -2477,14 +2614,31 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
 --- !u!1 &1988217385
 GameObject:
   m_ObjectHideFlags: 0
@@ -2523,8 +2677,8 @@ Transform:
   - {fileID: 2138444282}
   - {fileID: 196999209}
   - {fileID: 981537182}
-  - {fileID: 1919192650}
   - {fileID: 1711271190}
+  - {fileID: 1919192650}
   m_Father: {fileID: 1103801887}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2641,6 +2795,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5599587552749748207, guid: 64611baf63ffb22439af562d211a5707,
+        type: 3}
+      propertyPath: tableName.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599587552749748207, guid: 64611baf63ffb22439af562d211a5707,
+        type: 3}
+      propertyPath: tableName.Array.data[2]
+      value: LevelValue
+      objectReference: {fileID: 0}
     - target: {fileID: 5599587553979548771, guid: 64611baf63ffb22439af562d211a5707,
         type: 3}
       propertyPath: m_Name
@@ -2712,11 +2876,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2008867421}
-  - component: {fileID: 2008867424}
   - component: {fileID: 2008867423}
   - component: {fileID: 2008867422}
+  - component: {fileID: 2008867425}
   m_Layer: 5
-  m_Name: Level_0
+  m_Name: Level_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2731,7 +2895,7 @@ Transform:
   m_GameObject: {fileID: 2008867420}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -236, y: 8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
   m_RootOrder: 1
@@ -2775,7 +2939,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2008867424
+--- !u!114 &2008867425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2784,7 +2948,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2008867420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -2806,14 +2970,31 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
 --- !u!1 &2087936924
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,11 +3188,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2138444282}
-  - component: {fileID: 2138444285}
   - component: {fileID: 2138444284}
   - component: {fileID: 2138444283}
+  - component: {fileID: 2138444286}
   m_Layer: 5
-  m_Name: Level_5
+  m_Name: Level_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3026,7 +3207,7 @@ Transform:
   m_GameObject: {fileID: 2138444281}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 161, y: 8, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children: []
   m_Father: {fileID: 1988217386}
   m_RootOrder: 6
@@ -3070,7 +3251,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 70, y: 70, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2138444285
+--- !u!114 &2138444286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3079,7 +3260,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2138444281}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858a20c1b21a3f94bb5b2d3b901c9aaf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leftAnchor:
@@ -3101,11 +3282,28 @@ MonoBehaviour:
   updateAnchors: 1
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
-  mWidth: 70
-  mHeight: 70
+  mWidth: 100
+  mHeight: 100
   mDepth: 10
   mMat: {fileID: 0}
-  autoResizeBoxCollider: 1
+  autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
+  mType: 0
+  mFillDirection: 4
+  mFillAmount: 1
+  mInvert: 0
+  mFlip: 0
+  mApplyGradient: 0
+  mGradientTop: {r: 1, g: 1, b: 1, a: 1}
+  mGradientBottom: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  centerType: 1
+  leftType: 1
+  rightType: 1
+  bottomType: 1
+  topType: 1
+  mAtlas: {fileID: 11400000, guid: 440676f78462fea429235b9c1ff3194d, type: 2}
+  mSpriteName: Orc Armor - Boots
+  mFixedAspect: 0
+  mFillCenter: 1
